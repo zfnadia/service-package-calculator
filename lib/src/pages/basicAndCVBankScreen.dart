@@ -32,7 +32,7 @@ class BasicAndCVBankSub extends StatelessWidget {
             padding: EdgeInsets.only(left: 30.0, right: 10.0),
             children: <Widget>[
               SizedBox(
-                height: 40.0,
+                height: 30.0,
               ),
               Column(
                 children: <Widget>[
@@ -51,14 +51,37 @@ class BasicAndCVBankSub extends StatelessWidget {
                     height: 30.0,
                   ),
                   cvCount(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  validitySelection(),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  BasicJobSubscription.showAmount('Sub Total', '2,212.5'),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  BasicJobSubscription.showAmount('VAT (5%)', '2,212.5'),
+                  SizedBox(
+                    height: 30.0,
+                  ),
                 ],
               )
             ],
           )),
+          BasicJobSubscription.totalAmountBottom('46,462.5'),
         ],
       ),
     );
   }
+
   static Widget cvCount() {
     return Container(
       margin: EdgeInsets.only(right: 20.0),
@@ -68,19 +91,59 @@ class BasicAndCVBankSub extends StatelessWidget {
             children: <Widget>[
               Container(
                   margin: EdgeInsets.only(right: 10.0),
-                  child: Icon(Icons.check_circle_outline)
-              ),
+                  child: Icon(Icons.check_circle_outline)),
               Text('CVs: 1000',
-                  style: TextStyle(
-                      fontSize: 20.0, color: Colors.black87))
+                  style: TextStyle(fontSize: 20.0, color: Colors.black87))
             ],
           ),
           Spacer(),
           Text('4500  BDT',
-              style: TextStyle(
-                  fontSize: 20.0, color: Colors.black87))
+              style: TextStyle(fontSize: 20.0, color: Colors.black87))
         ],
       ),
+    );
+  }
+
+  static Widget validitySelection() {
+    return Row(
+      children: <Widget>[
+        Text('Validity',
+            style: TextStyle(fontSize: 20.0, color: Colors.black87)),
+        Spacer(),
+        Row(
+          children: <Widget>[
+            Container(
+              width: 190.0,
+              height: 80,
+              margin: EdgeInsets.only(right: 15.0),
+              padding: EdgeInsets.all(2.0),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Constants.listTileColor),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: 55.0,
+                      height: 50.0,
+                      margin: EdgeInsets.only(left: 3.0, right: 3.0),
+                      child: ButtonTheme(
+                        shape:
+                            CircleBorder(side: BorderSide(color: Colors.grey)),
+                        child: RaisedButton(
+                          child: Text("6"),
+                          splashColor: Colors.red,
+                          color: Colors.white,
+                          onPressed: () {},
+                        ),
+                      ),
+                    );
+                  }),
+            )
+          ],
+        ),
+      ],
     );
   }
 }

@@ -31,7 +31,7 @@ class StandoutSubscription extends StatelessWidget {
                 padding: EdgeInsets.only(left: 30.0, right: 10.0),
                 children: <Widget>[
                   SizedBox(
-                    height: 40.0,
+                    height: 30.0,
                   ),
                   Column(
                     children: <Widget>[
@@ -72,6 +72,9 @@ class StandoutSubscription extends StatelessWidget {
                         height: 30.0,
                       ),
                       BasicJobSubscription.showAmount('VAT (5%)', '2,212.5'),
+                      SizedBox(
+                        height: 30.0,
+                      ),
                     ],
                   ),
                 ],

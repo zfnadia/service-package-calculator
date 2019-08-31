@@ -5,6 +5,8 @@ import 'package:service_package_calculator/src/utilities/constants.dart';
 class BasicJobSubscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+//    final int basicJobRate = Constants.sourceData[0]['job_listing'][0]['basic'][0]['rate'];
+//    print('KKKKKKKKKKKKKK $basicJobRate');
     // TODO: implement build
     return Scaffold(
 //      resizeToAvoidBottomInset: false,
@@ -31,7 +33,7 @@ class BasicJobSubscription extends StatelessWidget {
                 padding: EdgeInsets.only(left: 30.0, right: 10.0),
                 children: <Widget>[
                   SizedBox(
-                    height: 40.0,
+                    height: 30.0,
                   ),
                   Column(
                     children: <Widget>[
@@ -51,6 +53,9 @@ class BasicJobSubscription extends StatelessWidget {
                         height: 40.0,
                       ),
                       showAmount('VAT (5%)', '2,212.5'),
+                      SizedBox(
+                        height: 30.0,
+                      ),
                     ],
                   ),
                 ],
@@ -140,7 +145,9 @@ class BasicJobSubscription extends StatelessWidget {
   static Widget totalAmountBottom(String amount) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black87,),
+        border: Border.all(
+          color: Colors.black87,
+        ),
       ),
       child: Align(
           alignment: Alignment.bottomCenter,
