@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:service_package_calculator/src/bloc/mainBloc.dart';
+import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
 import 'package:service_package_calculator/src/pages/basicJobScreen.dart';
 import 'package:service_package_calculator/src/pages/customizedSubScreen.dart';
@@ -36,7 +38,7 @@ class HomeScreen extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         children: <Widget>[
           SizedBox(
-            height: 40.0,
+            height: 30.0,
           ),
           Container(
             height: 150.0,
@@ -49,7 +51,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 40.0,
+            height: 30.0,
           ),
           Text(
             '${Constants.APP_TITLE}',
@@ -60,7 +62,7 @@ class HomeScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(
-            height: 20.0,
+            height: 10.0,
           ),
           Container(
             height: 450.0,

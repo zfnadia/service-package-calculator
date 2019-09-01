@@ -1,0 +1,177 @@
+{
+  "job_listing": {
+    "basic": {
+      "rate": 2950
+    },
+    "stand_out": {
+      "normal_rate": 3900,
+      "premium_rate": 4900
+    },
+    "hot_job": {
+      "normal_rate": 11000,
+      "premium_rate": 13500,
+      "discount_for_two": 25,
+      "discount_for_three": 41,
+      "discount_for_four": 43,
+      "discount_for_five": 45,
+      "discount_for_six_above": 51
+    },
+    "bulk": [
+      {
+        "name": "Basic Listing and CV Bank",
+        "rates": [
+          {
+            "min": 5,
+            "max": 10,
+            "duration": 6,
+            "discount": 20,
+            "rate": 2360,
+            "cv": 550,
+            "cv_fee": 2500
+          },
+          {
+            "min": 11,
+            "max": 20,
+            "duration": 6,
+            "discount": 30,
+            "rate": 2065,
+            "cv": 1000,
+            "cv_fee": 4500
+          },
+          {
+            "min": 20,
+            "max": 30,
+            "duration": 9,
+            "discount": 30,
+            "rate": 2065,
+            "cv": 1500,
+            "cv_fee": 6750
+          },
+          {
+            "min": 30,
+            "max": 40,
+            "duration": 12,
+            "discount": 40,
+            "rate": 1770,
+            "cv": 2000,
+            "cv_fee": 10000
+          },
+          {
+            "min": 41,
+            "max": 50,
+            "duration": 12,
+            "discount": 45,
+            "rate": 1623,
+            "cv": 2500,
+            "cv_fee": 12000
+          },
+          {
+            "min": 51,
+            "max": 100,
+            "duration": 12,
+            "discount": 55,
+            "rate": 1328,
+            "cv": 4500,
+            "cv_fee": 15000
+          },
+          {
+            "min": 101,
+            "max": 200,
+            "duration": 12,
+            "discount": 60,
+            "rate": 1180,
+            "cv": 10500,
+            "cv_fee": 20000
+          },
+          {
+            "min": 201,
+            "max": 2000,
+            "duration": 12,
+            "discount": 65,
+            "rate": 1033,
+            "cv": 15000,
+            "cv_fee": 25000
+          }
+        ]
+      },
+      {
+        "name": "Standout Listing and CV Bank",
+        "rates": [
+          {
+            "min": 5,
+            "max": 10,
+            "duration": 6,
+            "discount": 20,
+            "rate": 3120,
+            "cv": 550,
+            "cv_fee": 2500
+          },
+          {
+            "min": 11,
+            "max": 20,
+            "duration": 6,
+            "discount": 30,
+            "rate": 2730,
+            "cv": 1000,
+            "cv_fee": 4500
+          },
+          {
+            "min": 20,
+            "max": 30,
+            "duration": 9,
+            "discount": 30,
+            "rate": 2730,
+            "cv": 1500,
+            "cv_fee": 6750
+          },
+          {
+            "min": 30,
+            "max": 40,
+            "duration": 12,
+            "discount": 40,
+            "rate": 2340,
+            "cv": 2000,
+            "cv_fee": 10000
+          },
+          {
+            "min": 41,
+            "max": 50,
+            "duration": 12,
+            "discount": 45,
+            "rate": 2145,
+            "cv": 2500,
+            "cv_fee": 12000
+          },
+          {
+            "min": 51,
+            "max": 100,
+            "duration": 12,
+            "discount": 55,
+            "rate": 1755,
+            "cv": 4500,
+            "cv_fee": 15000
+          },
+          {
+            "min": 101,
+            "max": 200,
+            "duration": 12,
+            "discount": 60,
+            "rate": 1560,
+            "cv": 10500,
+            "cv_fee": 20000
+          },
+          {
+            "min": 201,
+            "max": 2000,
+            "duration": 12,
+            "discount": 65,
+            "rate": 1365,
+            "cv": 15000,
+            "cv_fee": 25000
+          }
+        ]
+      }
+    ]
+  },
+  "vat": 5
+}

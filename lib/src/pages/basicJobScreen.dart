@@ -1,70 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:service_package_calculator/src/bloc/mainBloc.dart';
+import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
+import 'package:service_package_calculator/src/utilities/Commons.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class BasicJobSubscription extends StatelessWidget {
+class BasicJobSubscription extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-//    final int basicJobRate = Constants.sourceData[0]['job_listing'][0]['basic'][0]['rate'];
-//    print('KKKKKKKKKKKKKK $basicJobRate');
-    // TODO: implement build
-    return Scaffold(
-//      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
-        title: Text(
-          'Basic Job',
-          style: TextStyle(color: Colors.black87),
-        ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
-      ),
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.only(left: 30.0, right: 10.0),
-                children: <Widget>[
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      // Switch button
-                      switchBDTtoDollar(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      //Selected Job Number
-                      editJobAmount('Jobs'),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Amount row
-                      showAmount('Amount', '44,250'),
-                      SizedBox(
-                        height: 40.0,
-                      ),
-                      showAmount('VAT (5%)', '2,212.5'),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            totalAmountBottom('46,462.5'),
-          ]),
-    );
-  }
+  _BasicJobSubscriptionState createState() => _BasicJobSubscriptionState();
 
   static Widget switchBDTtoDollar() {
     return Row(
@@ -83,60 +26,6 @@ class BasicJobSubscription extends StatelessWidget {
               Switch(value: false, onChanged: null)
             ],
           ),
-        )
-      ],
-    );
-  }
-
-  static Widget editJobAmount(String title) {
-    return Row(
-      children: <Widget>[
-        Text('$title', style: TextStyle(fontSize: 20.0, color: Colors.black87)),
-        Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-//                            _itemCount!=0? new
-            IconButton(
-                icon: Icon(Icons.remove_circle_outline), onPressed: () {}),
-//                                :
-            Container(
-              height: 40.0,
-              width: 100.0,
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Constants.listTileColor),
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              child: TextField(
-                textAlign: TextAlign.center,
-                decoration: InputDecoration.collapsed(hintText: ''),
-                cursorColor: Constants.listTileColor,
-                keyboardType: TextInputType.number,
-                onTap: () {},
-              ),
-            ),
-//                            Text(_itemCount.toString()),
-            IconButton(
-                icon: new Icon(Icons.add_circle_outline), onPressed: () {}),
-          ],
-        ),
-      ],
-    );
-  }
-
-  static Widget showAmount(String title, String amount) {
-    return Row(
-      children: <Widget>[
-        Text('$title', style: TextStyle(fontSize: 20.0, color: Colors.black87)),
-        Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(right: 15.0),
-                child: Text('$amount  BDT',
-                    style: TextStyle(fontSize: 20.0, color: Colors.black87))),
-          ],
         )
       ],
     );
@@ -170,5 +59,108 @@ class BasicJobSubscription extends StatelessWidget {
             ),
           )),
     );
+  }
+}
+
+class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
+  MainBloc mainBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Constants.listTileColor,
+        title: Text(
+          'Basic Job',
+          style: TextStyle(color: Colors.black87),
+        ),
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black87,
+            ),
+            onPressed: () {
+              routes.goToHomePage(context);
+            }),
+      ),
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(left: 30.0, right: 10.0),
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Column(
+                    children: <Widget>[
+                      // Switch button
+                      BasicJobSubscription.switchBDTtoDollar(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      //Selected Job Number
+                      Commons.editJobAmount(
+                          'Jobs',
+                          mainBloc.basicJobNum,
+                          mainBloc.sinkBasicJobNumber,
+                          mainBloc.incrementJobNum,
+                          mainBloc.decrementJobNum),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      //Amount row
+                      StreamBuilder(
+                          stream: mainBloc.basicJobFee,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'Amount',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                      StreamBuilder(
+                          stream: mainBloc.jobVat,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'VAT (5%)',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            StreamBuilder(
+                stream: mainBloc.totalAmount,
+                builder: (context, snapshot) {
+                  return BasicJobSubscription.totalAmountBottom(
+                      snapshot.hasData && snapshot.data != null
+                          ? '${snapshot.data}'
+                          : '0.0');
+                }),
+          ]),
+    );
+  }
+
+  @override
+  void dispose() {
+    mainBloc.clearAllData();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    mainBloc = BlocProvider.of(context);
   }
 }

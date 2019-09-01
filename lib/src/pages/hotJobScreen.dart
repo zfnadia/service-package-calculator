@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/pages/basicJobScreen.dart';
 import 'package:service_package_calculator/src/pages/standoutJobScreen.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
+import 'package:service_package_calculator/src/utilities/Commons.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class HotJobSubscription extends StatelessWidget {
@@ -43,23 +44,23 @@ class HotJobSubscription extends StatelessWidget {
                     ),
                     StandoutSubscription.boldRowTitle('Hot Job'),
                     //Selected Job Number
-                    BasicJobSubscription.editJobAmount('Jobs'),
+//                    BasicJobSubscription.editJobAmount('Jobs', context),
                     SizedBox(
                       height: 20.0,
                     ),
                     //Amount row
-                    BasicJobSubscription.showAmount('Amount', '44,250'),
+                    Commons.showAmount('Amount', '44,250'),
                     showDiscount('45'),
                     SizedBox(
                       height: 30.0,
                     ),
                     StandoutSubscription.boldRowTitle('Hot Job Premium'),
-                    BasicJobSubscription.editJobAmount('Jobs'),
+//                    BasicJobSubscription.editJobAmount('Jobs', context),
                     SizedBox(
                       height: 20.0,
                     ),
                     //Amount row
-                    BasicJobSubscription.showAmount('Amount', '44,250'),
+                    Commons.showAmount('Amount', '44,250'),
                     showDiscount('45'),
                     SizedBox(
                       height: 30.0,
@@ -70,11 +71,11 @@ class HotJobSubscription extends StatelessWidget {
                     SizedBox(
                       height: 30.0,
                     ),
-                    BasicJobSubscription.showAmount('Sub Total', '2,212.5'),
+                    Commons.showAmount('Sub Total', '2,212.5'),
                     SizedBox(
                       height: 30.0,
                     ),
-                    BasicJobSubscription.showAmount('VAT (5%)', '2,212.5'),
+                    Commons.showAmount('VAT (5%)', '2,212.5'),
                     SizedBox(
                       height: 30.0,
                     ),
