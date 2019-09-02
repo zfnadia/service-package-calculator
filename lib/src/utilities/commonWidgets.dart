@@ -2,7 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class Commons {
-  static Widget editJobAmount(String title, Stream stream, Function changeFunction,Function inc,Function dec) {
+  static Widget switchBDTtoDollar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Container(
+          width: 100.0,
+          padding: EdgeInsets.only(left: 5.0, right: 5.0),
+          margin: EdgeInsets.only(right: 15.0),
+          decoration: BoxDecoration(
+              border: Border.all(color: Constants.listTileColor),
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          child: Row(
+            children: <Widget>[
+              Text('BDT'), //value == false ? 'BDT' : 'USD'
+              Switch(value: false, onChanged: null)
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  static Widget editJobAmount(String title, Stream stream,
+      Function changeFunction, Function inc, Function dec) {
     final _controller = TextEditingController();
     return Row(
       children: <Widget>[
@@ -15,7 +38,7 @@ class Commons {
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
                   dec();
-                }), //                                :
+                }),
             Container(
               height: 40.0,
               width: 100.0,
@@ -36,14 +59,13 @@ class Commons {
                     return TextField(
                       controller: _controller,
                       textAlign: TextAlign.center,
-                      decoration:
-                      InputDecoration.collapsed(hintText: ''),
+                      decoration: InputDecoration.collapsed(hintText: ''),
                       cursorColor: Constants.listTileColor,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
                         changeFunction(value);
-                        _controller.selection = TextSelection.collapsed(
-                            offset: value.length);
+                        _controller.selection =
+                            TextSelection.collapsed(offset: value.length);
                       },
                     );
                   }),
@@ -77,5 +99,33 @@ class Commons {
     );
   }
 
-
+  static Widget totalAmountBottom(String amount) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black87,
+        ),
+      ),
+      child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 80.0,
+            width: double.infinity,
+            color: Constants.listTileColor,
+            child: Container(
+              margin: EdgeInsets.only(right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text('Amount to pay:   $amount BDT',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+          )),
+    );
+  }
 }

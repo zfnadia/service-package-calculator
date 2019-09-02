@@ -1,15 +1,11 @@
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
-
-import 'package:service_package_calculator/src/model/servicePackageModel.dart';
-
 import '../repository.dart';
+import 'package:intl/intl.dart';
 
 class MainBloc extends BlocBase {
-  //static ServicePackageModel  servicePackageModel;
+  //to get comma separated currency value
+  final oCcy = new NumberFormat("#,##0.00", "en_US");
   int jobNum = 0;
 
   //-------------------BehaviorSubjects-----------------------------------------
@@ -29,58 +25,52 @@ class MainBloc extends BlocBase {
 
   //-----------------------Function---------------------------------------------
   //Function(String) get sinkBasicJobNum => _basicJobNum.sink.add;
-
   Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
 
   Function(String) get sinkVat => _vat.sink.add;
 
   Function(String) get sinkTotalAmount => _totalAmount.sink.add;
 
-
   void sinkBasicJobNumber(String jobNum) {
     _basicJobNum.sink.add(jobNum);
-    getAmount();
+    getBasicJobAmount();
   }
-
 
   void incrementJobNum() {
     int jobNum = 0;
     jobNum = int.tryParse(_basicJobNum.value);
-    if ( jobNum >= 0) {
+    if (jobNum >= 0) {
       jobNum++;
-      sinkBasicJobNumber( jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString());
     }
   }
 
   void decrementJobNum() {
     int jobNum = 0;
     jobNum = int.tryParse(_basicJobNum.value);
-    if ( jobNum > 0) {
+    if (jobNum > 0) {
       jobNum--;
-      sinkBasicJobNumber( jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString());
     }
   }
 
-  void getAmount() {
-    int basicRate = repository.servicePackageModel.jobListing != null ? repository.servicePackageModel.jobListing.basic.rate : 0;
+  void getBasicJobAmount() {
+    int basicRate = repository.servicePackageModel.jobListing != null
+        ? repository.servicePackageModel.jobListing.basic.rate
+        : 0;
     int jobNum = int.tryParse(_basicJobNum.value);
 
-
-    if(jobNum==null){
-      jobNum =0;
+    if (jobNum == null) {
+      jobNum = 0;
     }
-
-
 
     int calculatedAmount = (jobNum * basicRate);
     double vat = calculatedAmount * 0.05;
     double totalAmount = calculatedAmount + vat;
-    print("AMOUNT $calculatedAmount");
-    sinkBasicJobFee(calculatedAmount.toString());
-    sinkVat(vat.toString());
-    sinkTotalAmount(totalAmount.toString());
+    sinkBasicJobFee(oCcy.format(calculatedAmount).toString());
+    sinkVat(oCcy.format(vat).toString());
+    sinkTotalAmount(oCcy.format(totalAmount).toString());
   }
-
 
   @override
   void dispose() {

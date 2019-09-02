@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/pages/basicJobScreen.dart';
 import 'package:service_package_calculator/src/pages/standoutJobScreen.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
-import 'package:service_package_calculator/src/utilities/Commons.dart';
+import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class HotJobSubscription extends StatelessWidget {
@@ -38,7 +37,7 @@ class HotJobSubscription extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     // Switch button
-                    BasicJobSubscription.switchBDTtoDollar(),
+                    Commons.switchBDTtoDollar(),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -84,7 +83,7 @@ class HotJobSubscription extends StatelessWidget {
               ],
             ),
           ),
-          BasicJobSubscription.totalAmountBottom('46,462.5'),
+          Commons.totalAmountBottom('46,462.5'),
         ],
       ),
     );

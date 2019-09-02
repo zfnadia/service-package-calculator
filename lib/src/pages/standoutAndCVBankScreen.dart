@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
-import 'package:service_package_calculator/src/pages/basicJobScreen.dart';
 import 'package:service_package_calculator/src/pages/hotJobScreen.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
-import 'package:service_package_calculator/src/utilities/Commons.dart';
+import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class StandoutAndCVBankSub extends StatelessWidget {
@@ -38,7 +37,7 @@ class StandoutAndCVBankSub extends StatelessWidget {
                   ),
                   Column(
                     children: <Widget>[
-                      BasicJobSubscription.switchBDTtoDollar(),
+                      Commons.switchBDTtoDollar(),
                       SizedBox(
                         height: 20.0,
                       ),
@@ -78,7 +77,7 @@ class StandoutAndCVBankSub extends StatelessWidget {
                   )
                 ],
               )),
-          BasicJobSubscription.totalAmountBottom('46,462.5'),
+          Commons.totalAmountBottom('46,462.5'),
         ],
       ),
     );
