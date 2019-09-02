@@ -54,12 +54,10 @@ class MainBloc extends BlocBase {
     }
   }
 
-  void getBasicJobAmount() {
-    int basicRate = repository.servicePackageModel.jobListing != null
-        ? repository.servicePackageModel.jobListing.basic.rate
-        : 0;
+  void getBasicJobAmount()async {
+    var servicePackageModel = await repository.getServicePackageModel();
+    int basicRate = servicePackageModel.jobListing.basic.rate;
     int jobNum = int.tryParse(_basicJobNum.value);
-
     if (jobNum == null) {
       jobNum = 0;
     }
@@ -71,6 +69,41 @@ class MainBloc extends BlocBase {
     sinkVat(oCcy.format(vat).toString());
     sinkTotalAmount(oCcy.format(totalAmount).toString());
   }
+
+  void getStandOutJobAmount()async {
+    var servicePackageModel = await repository.getServicePackageModel();
+    int basicRate = servicePackageModel.jobListing.standOut.normalRate;
+    int jobNum = int.tryParse(_basicJobNum.value);
+    if (jobNum == null) {
+      jobNum = 0;
+    }
+
+    int calculatedAmount = (jobNum * basicRate);
+    double vat = calculatedAmount * 0.05;
+    double totalAmount = calculatedAmount + vat;
+    sinkBasicJobFee(oCcy.format(calculatedAmount).toString());
+    sinkVat(oCcy.format(vat).toString());
+    sinkTotalAmount(oCcy.format(totalAmount).toString());
+  }
+
+
+  void getStandOutPremiumJobAmount()async {
+    var servicePackageModel = await repository.getServicePackageModel();
+    int basicRate = servicePackageModel.jobListing.standOut.premiumRate;
+    int jobNum = int.tryParse(_basicJobNum.value);
+    if (jobNum == null) {
+      jobNum = 0;
+    }
+
+    int calculatedAmount = (jobNum * basicRate);
+    double vat = calculatedAmount * 0.05;
+    double totalAmount = calculatedAmount + vat;
+    sinkBasicJobFee(oCcy.format(calculatedAmount).toString());
+    sinkVat(oCcy.format(vat).toString());
+    sinkTotalAmount(oCcy.format(totalAmount).toString());
+  }
+
+
 
   @override
   void dispose() {
