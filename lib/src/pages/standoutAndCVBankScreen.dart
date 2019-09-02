@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
-import 'package:service_package_calculator/src/pages/hotJobScreen.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
@@ -47,7 +46,7 @@ class StandoutAndCVBankSub extends StatelessWidget {
                       ),
                       //Amount row
                       Commons.showAmount('Amount', '44,250'),
-                      HotJobSubscription.showDiscount('30'),
+                      Commons.showDiscount('30'),
                       SizedBox(
                         height: 30.0,
                       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/bloc/mainBloc.dart';
+import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
+import 'package:service_package_calculator/src/bloc/hotJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
+import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
 import 'package:service_package_calculator/src/pages/homeScreen.dart';
 import 'package:service_package_calculator/src/repository.dart';
 
@@ -11,6 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        bloc: MainBloc(), child: MaterialApp(home: HomeScreen()));
+        bloc: BasicJobBloc(),
+        child: BlocProvider(
+            bloc: StandoutJobBloc(),
+          child: BlocProvider(
+              bloc: HotJobBloc(),
+              child: MaterialApp(
+                  home: HomeScreen())
+          )
+        )
+    );
   }
 }

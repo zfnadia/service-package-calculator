@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
+import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class StandoutSubscription extends StatelessWidget {
+class StandoutSubscription extends StatefulWidget {
+  @override
+  _StandoutSubscriptionState createState() => _StandoutSubscriptionState();
+}
+
+class _StandoutSubscriptionState extends State<StandoutSubscription> {
+  StandoutJobBloc standoutJobBloc;
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.listTileColor,
@@ -40,24 +48,50 @@ class StandoutSubscription extends StatelessWidget {
                       SizedBox(
                         height: 20.0,
                       ),
-                      boldRowTitle('Standout'),
+                      Commons.boldRowTitle('Standout'),
                       //Selected Job Number
-//                      BasicJobSubscription.editJobAmount('Jobs', context),
+                      Commons.editJobAmount(
+                          'Jobs',
+                          standoutJobBloc.getBasicJobNum,
+                          standoutJobBloc.sinkBasicJobNumber,
+                          standoutJobBloc.incrementBasicJobNum,
+                          standoutJobBloc.decrementBasicJobNum),
                       SizedBox(
                         height: 20.0,
                       ),
                       //Amount row
-                      Commons.showAmount('Amount', '44,250'),
+                      StreamBuilder(
+                          stream: standoutJobBloc.getBasicJobFee,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'Amount',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
                       SizedBox(
                         height: 30.0,
                       ),
-                      boldRowTitle('Standout Premium'),
-//                      BasicJobSubscription.editJobAmount('Jobs', context),
+                      Commons.boldRowTitle('Standout Premium'),
+                      Commons.editJobAmount(
+                          'Jobs',
+                          standoutJobBloc.getPremiumJobNum,
+                          standoutJobBloc.sinkPremiumJobNumber,
+                          standoutJobBloc.incrementPremiumJobNum,
+                          standoutJobBloc.decrementPremiumJobNum),
                       SizedBox(
                         height: 20.0,
                       ),
                       //Amount row
-                      Commons.showAmount('Amount', '44,250'),
+                      StreamBuilder(
+                          stream: standoutJobBloc.getPremiumJobFee,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'Amount',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
                       SizedBox(
                         height: 30.0,
                       ),
@@ -67,11 +101,25 @@ class StandoutSubscription extends StatelessWidget {
                       SizedBox(
                         height: 30.0,
                       ),
-                      Commons.showAmount('Sub Total', '2,212.5'),
+                      StreamBuilder(
+                        stream: standoutJobBloc.getSubTotal,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount('Sub Total', snapshot.hasData && snapshot.data != null
+                              ? '${snapshot.data}'
+                              : '0.0');
+                        }
+                      ),
                       SizedBox(
                         height: 30.0,
                       ),
-                      Commons.showAmount('VAT (5%)', '2,212.5'),
+                      StreamBuilder(
+                        stream: standoutJobBloc.getVat,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount('VAT (5%)', snapshot.hasData && snapshot.data != null
+                              ? '${snapshot.data}'
+                              : '0.0');
+                        }
+                      ),
                       SizedBox(
                         height: 30.0,
                       ),
@@ -80,23 +128,27 @@ class StandoutSubscription extends StatelessWidget {
                 ],
               ),
             ),
-            Commons.totalAmountBottom('46,462.5'),
+            StreamBuilder(
+              stream: standoutJobBloc.getSubTotalPlusVat,
+              builder: (context, snapshot) {
+                return Commons.totalAmountBottom(snapshot.hasData && snapshot.data != null
+                    ? '${snapshot.data}'
+                    : '0.0');
+              }
+            ),
           ]),
     );
   }
 
-  static Widget boldRowTitle(String title) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
-      child: Row(
-        children: <Widget>[
-          Text('$title',
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold))
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    standoutJobBloc.clearAllData();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    standoutJobBloc = BlocProvider.of(context);
   }
 }

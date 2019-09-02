@@ -128,4 +128,35 @@ class Commons {
           )),
     );
   }
+
+  static Widget boldRowTitle(String title) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.0),
+      child: Row(
+        children: <Widget>[
+          Text('$title',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold))
+        ],
+      ),
+    );
+  }
+
+  static Widget showDiscount(String discountAmount) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Container(
+            margin: EdgeInsets.only(top: 5.0, right: 15.0),
+            child: Text('$discountAmount% discount appplied',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic))),
+      ],
+    );
+  }
 }

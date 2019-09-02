@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/bloc/mainBloc.dart';
+import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
@@ -11,7 +11,7 @@ class BasicJobSubscription extends StatefulWidget {
 }
 
 class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
-  MainBloc mainBloc;
+  BasicJobBloc basicJobBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -51,16 +51,16 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                       //Selected Job Number
                       Commons.editJobAmount(
                           'Jobs',
-                          mainBloc.basicJobNum,
-                          mainBloc.sinkBasicJobNumber,
-                          mainBloc.incrementJobNum,
-                          mainBloc.decrementJobNum),
+                          basicJobBloc.basicJobNum,
+                          basicJobBloc.sinkBasicJobNumber,
+                          basicJobBloc.incrementJobNum,
+                          basicJobBloc.decrementJobNum),
                       SizedBox(
                         height: 30.0,
                       ),
                       //Amount row
                       StreamBuilder(
-                          stream: mainBloc.basicJobFee,
+                          stream: basicJobBloc.basicJobFee,
                           builder: (context, snapshot) {
                             return Commons.showAmount(
                                 'Amount',
@@ -72,7 +72,7 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                         height: 40.0,
                       ),
                       StreamBuilder(
-                          stream: mainBloc.jobVat,
+                          stream: basicJobBloc.jobVat,
                           builder: (context, snapshot) {
                             return Commons.showAmount(
                                 'VAT (5%)',
@@ -89,7 +89,7 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
               ),
             ),
             StreamBuilder(
-                stream: mainBloc.totalAmount,
+                stream: basicJobBloc.totalAmount,
                 builder: (context, snapshot) {
                   return Commons.totalAmountBottom(
                       snapshot.hasData && snapshot.data != null
@@ -102,13 +102,13 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
 
   @override
   void dispose() {
-    mainBloc.clearAllData();
+    basicJobBloc.clearAllData();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mainBloc = BlocProvider.of(context);
+    basicJobBloc = BlocProvider.of(context);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/bloc/mainBloc.dart';
+import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
 import 'package:service_package_calculator/src/pages/basicJobScreen.dart';

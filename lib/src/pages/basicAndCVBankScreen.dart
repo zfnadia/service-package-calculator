@@ -46,7 +46,7 @@ class BasicAndCVBankSub extends StatelessWidget {
                   ),
                   //Amount row
                   Commons.showAmount('Amount', '44,250'),
-                  HotJobSubscription.showDiscount('30'),
+                  Commons.showDiscount('30'),
                   SizedBox(
                     height: 30.0,
                   ),

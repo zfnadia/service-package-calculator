@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/pages/standoutJobScreen.dart';
+import 'package:service_package_calculator/src/bloc/hotJobBloc.dart';
+import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class HotJobSubscription extends StatelessWidget {
+class HotJobSubscription extends StatefulWidget {
+  @override
+  _HotJobSubscriptionState createState() => _HotJobSubscriptionState();
+}
+
+class _HotJobSubscriptionState extends State<HotJobSubscription> {
+  HotJobBloc hotJobBloc;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -41,26 +48,52 @@ class HotJobSubscription extends StatelessWidget {
                     SizedBox(
                       height: 20.0,
                     ),
-                    StandoutSubscription.boldRowTitle('Hot Job'),
+                    Commons.boldRowTitle('Hot Job'),
                     //Selected Job Number
-//                    BasicJobSubscription.editJobAmount('Jobs', context),
+                    Commons.editJobAmount(
+                        'Jobs',
+                        hotJobBloc.getBasicJobNum,
+                        hotJobBloc.sinkBasicJobNumber,
+                        hotJobBloc.incrementBasicJobNum,
+                        hotJobBloc.decrementBasicJobNum),
                     SizedBox(
                       height: 20.0,
                     ),
                     //Amount row
-                    Commons.showAmount('Amount', '44,250'),
-                    showDiscount('45'),
+                    StreamBuilder(
+                        stream: hotJobBloc.getBasicJobFee,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount(
+                              'Amount',
+                              snapshot.hasData && snapshot.data != null
+                                  ? '${snapshot.data}'
+                                  : '0.0');
+                        }),
+                    Commons.showDiscount('45'),
                     SizedBox(
                       height: 30.0,
                     ),
-                    StandoutSubscription.boldRowTitle('Hot Job Premium'),
-//                    BasicJobSubscription.editJobAmount('Jobs', context),
+                    Commons.boldRowTitle('Hot Job Premium'),
+                    Commons.editJobAmount(
+                        'Jobs',
+                        hotJobBloc.getPremiumJobNum,
+                        hotJobBloc.sinkPremiumJobNumber,
+                        hotJobBloc.incrementPremiumJobNum,
+                        hotJobBloc.decrementPremiumJobNum),
                     SizedBox(
                       height: 20.0,
                     ),
                     //Amount row
-                    Commons.showAmount('Amount', '44,250'),
-                    showDiscount('45'),
+                    StreamBuilder(
+                        stream: hotJobBloc.getPremiumJobFee,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount(
+                              'Amount',
+                              snapshot.hasData && snapshot.data != null
+                                  ? '${snapshot.data}'
+                                  : '0.0');
+                        }),
+                    Commons.showDiscount('45'),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -70,11 +103,25 @@ class HotJobSubscription extends StatelessWidget {
                     SizedBox(
                       height: 30.0,
                     ),
-                    Commons.showAmount('Sub Total', '2,212.5'),
+                    StreamBuilder(
+                        stream: hotJobBloc.getSubTotal,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount('Sub Total', snapshot.hasData && snapshot.data != null
+                              ? '${snapshot.data}'
+                              : '0.0');
+                        }
+                    ),
                     SizedBox(
                       height: 30.0,
                     ),
-                    Commons.showAmount('VAT (5%)', '2,212.5'),
+                    StreamBuilder(
+                        stream: hotJobBloc.getVat,
+                        builder: (context, snapshot) {
+                          return Commons.showAmount('VAT (5%)', snapshot.hasData && snapshot.data != null
+                              ? '${snapshot.data}'
+                              : '0.0');
+                        }
+                    ),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -83,25 +130,28 @@ class HotJobSubscription extends StatelessWidget {
               ],
             ),
           ),
-          Commons.totalAmountBottom('46,462.5'),
+          StreamBuilder(
+              stream: hotJobBloc.getSubTotalPlusVat,
+              builder: (context, snapshot) {
+                return Commons.totalAmountBottom(snapshot.hasData && snapshot.data != null
+                    ? '${snapshot.data}'
+                    : '0.0');
+              }
+          ),
         ],
       ),
     );
   }
 
-  static Widget showDiscount(String discountAmount) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Container(
-            margin: EdgeInsets.only(top: 5.0, right: 15.0),
-            child: Text('$discountAmount% discount appplied',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic))),
-      ],
-    );
+  @override
+  void dispose() {
+    hotJobBloc.clearAllData();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    hotJobBloc = BlocProvider.of(context);
   }
 }

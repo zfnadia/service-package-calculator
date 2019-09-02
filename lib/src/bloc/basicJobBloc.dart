@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import '../repository.dart';
 import 'package:intl/intl.dart';
 
-class MainBloc extends BlocBase {
+class BasicJobBloc extends BlocBase {
   //to get comma separated currency value
   final oCcy = new NumberFormat("#,##0.00", "en_US");
   int jobNum = 0;
