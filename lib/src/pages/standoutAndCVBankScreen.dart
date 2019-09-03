@@ -50,11 +50,11 @@ class StandoutAndCVBankSub extends StatelessWidget {
                       SizedBox(
                         height: 30.0,
                       ),
-                      BasicAndCVBankSub.cvCount(),
+//                      Commons.cvCount(),
                       SizedBox(
                         height: 20.0,
                       ),
-                      BasicAndCVBankSub.validitySelection(),
+//                      Commons.validitySelection(),
                       SizedBox(
                         height: 30.0,
                       ),

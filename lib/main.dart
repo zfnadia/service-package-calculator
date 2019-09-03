@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:service_package_calculator/src/bloc/basicAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/hotJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
@@ -16,11 +17,13 @@ class MyApp extends StatelessWidget {
         bloc: BasicJobBloc(),
         child: BlocProvider(
             bloc: StandoutJobBloc(),
-          child: BlocProvider(
-              bloc: HotJobBloc(),
-              child: MaterialApp(
-                  home: HomeScreen())
-          )
+            child: BlocProvider(
+                bloc: HotJobBloc(),
+                child: BlocProvider(
+                  bloc: BasicAndCVBankBloc(),
+                  child: MaterialApp(home: HomeScreen()),
+                )
+            )
         )
     );
   }

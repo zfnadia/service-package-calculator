@@ -110,5 +110,6 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     basicJobBloc = BlocProvider.of(context);
+    basicJobBloc.sinkBasicJobNumber('0');
   }
 }

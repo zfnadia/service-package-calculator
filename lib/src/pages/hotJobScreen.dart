@@ -12,6 +12,7 @@ class HotJobSubscription extends StatefulWidget {
 
 class _HotJobSubscriptionState extends State<HotJobSubscription> {
   HotJobBloc hotJobBloc;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -69,7 +70,14 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                                   ? '${snapshot.data}'
                                   : '0.0');
                         }),
-                    Commons.showDiscount('45'),
+                    StreamBuilder(
+                        stream: hotJobBloc.showDiscountForBasic,
+                        builder: (context, snapshot) {
+                          return snapshot.hasData && snapshot.data != 'false'
+                              ? Commons.showDiscount('${snapshot.data}')
+                              : SizedBox(
+                                );
+                        }),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -93,7 +101,14 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                                   ? '${snapshot.data}'
                                   : '0.0');
                         }),
-                    Commons.showDiscount('45'),
+                    StreamBuilder(
+                        stream: hotJobBloc.showDiscountForPremium,
+                        builder: (context, snapshot) {
+                          return snapshot.hasData && snapshot.data != 'false'
+                              ? Commons.showDiscount('${snapshot.data}')
+                              : SizedBox(
+                          );
+                        }),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -106,22 +121,24 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                     StreamBuilder(
                         stream: hotJobBloc.getSubTotal,
                         builder: (context, snapshot) {
-                          return Commons.showAmount('Sub Total', snapshot.hasData && snapshot.data != null
-                              ? '${snapshot.data}'
-                              : '0.0');
-                        }
-                    ),
+                          return Commons.showAmount(
+                              'Sub Total',
+                              snapshot.hasData && snapshot.data != null
+                                  ? '${snapshot.data}'
+                                  : '0.0');
+                        }),
                     SizedBox(
                       height: 30.0,
                     ),
                     StreamBuilder(
                         stream: hotJobBloc.getVat,
                         builder: (context, snapshot) {
-                          return Commons.showAmount('VAT (5%)', snapshot.hasData && snapshot.data != null
-                              ? '${snapshot.data}'
-                              : '0.0');
-                        }
-                    ),
+                          return Commons.showAmount(
+                              'VAT (5%)',
+                              snapshot.hasData && snapshot.data != null
+                                  ? '${snapshot.data}'
+                                  : '0.0');
+                        }),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -133,11 +150,11 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
           StreamBuilder(
               stream: hotJobBloc.getSubTotalPlusVat,
               builder: (context, snapshot) {
-                return Commons.totalAmountBottom(snapshot.hasData && snapshot.data != null
-                    ? '${snapshot.data}'
-                    : '0.0');
-              }
-          ),
+                return Commons.totalAmountBottom(
+                    snapshot.hasData && snapshot.data != null
+                        ? '${snapshot.data}'
+                        : '0.0');
+              }),
         ],
       ),
     );
@@ -153,5 +170,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     hotJobBloc = BlocProvider.of(context);
+    hotJobBloc.sinkBasicJobNumber('0');
+    hotJobBloc.sinkPremiumJobNumber('0');
   }
 }

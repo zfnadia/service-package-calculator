@@ -6,7 +6,6 @@ import 'package:service_package_calculator/src/repository.dart';
 class HotJobBloc extends BlocBase {
   //to get comma separated currency value
   final oCcy = new NumberFormat("#,##0.00", "en_US");
-  int jobNum = 0;
   double calculatedBasicFee = 0;
   double calculatedPremiumFee = 0;
   double subTotal = 0;
@@ -22,10 +21,12 @@ class HotJobBloc extends BlocBase {
   final _vat = BehaviorSubject<String>();
   final _subTotal = BehaviorSubject<String>();
   final _subTotalPlusVat = BehaviorSubject<String>();
+  final _showDiscountForBasic = BehaviorSubject<String>();
+  final _showDiscountForPremium = BehaviorSubject<String>();
 
   //-----------------------Stream-----------------------------------------------
 
-  Stream<String> get  getBasicJobNum => _basicJobNum.stream;
+  Stream<String> get getBasicJobNum => _basicJobNum.stream;
 
   Stream<String> get getPremiumJobNum => _premiumJobNum.stream;
 
@@ -39,51 +40,62 @@ class HotJobBloc extends BlocBase {
 
   Stream<String> get getSubTotalPlusVat => _subTotalPlusVat.stream;
 
+  Stream<String> get showDiscountForBasic => _showDiscountForBasic.stream;
+
+  Stream<String> get showDiscountForPremium => _showDiscountForPremium.stream;
+
   //-----------------------Function---------------------------------------------
 
   void sinkBasicJobNumber(String jobNum) async {
     _basicJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_basicJobNum.value);
-    print('JJJJJJJJJJJJJJ ${selectedJobNum}');
-    if(selectedJobNum == 0) {
+    if (selectedJobNum == 0 || selectedJobNum == null) {
       getBasicCalculation(0);
+      sinkShowDiscountBasic('false');
     } else if (selectedJobNum == 1) {
+      sinkShowDiscountBasic('false');
       getBasicCalculation(1);
     } else if (selectedJobNum == 2) {
+      sinkShowDiscountBasic('25%');
       getBasicCalculation(0.75);
     } else if (selectedJobNum == 3) {
-      getBasicCalculation(0.59);
+      sinkShowDiscountBasic('~ 40.91%');
+      getBasicCalculation(0.590909091);
     } else if (selectedJobNum == 4) {
-      getBasicCalculation(0.57);
+      sinkShowDiscountBasic('~ 43.18%');
+      getBasicCalculation(0.568181818);
     } else if (selectedJobNum == 5) {
-      getBasicCalculation(0.55);
-    } else if (selectedJobNum == 6) {
-      getBasicCalculation(0.49);
-    } else if(selectedJobNum == null) {
-      getBasicCalculation(0.0);
-    } else if(selectedJobNum == 6 || selectedJobNum >= 7) {
-      getBasicCalculation(0.49);
+      sinkShowDiscountBasic('~ 44.55%');
+      getBasicCalculation(0.554545454);
+    } else if (selectedJobNum == 6 || selectedJobNum >= 7) {
+      sinkShowDiscountBasic('~ 50.90%');
+      getBasicCalculation(0.490909091);
     }
   }
 
   void sinkPremiumJobNumber(String jobNum) {
     _premiumJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_premiumJobNum.value);
-    if(selectedJobNum == 0) {
+    if (selectedJobNum == 0 || selectedJobNum == null) {
       getPremiumCalculation(0);
+      sinkShowDiscountPremium('false');
     } else if (selectedJobNum == 1) {
       getPremiumCalculation(1);
+      sinkShowDiscountPremium('false');
     } else if (selectedJobNum == 2) {
+      sinkShowDiscountPremium('25%');
       getPremiumCalculation(0.75);
     } else if (selectedJobNum == 3) {
-      getPremiumCalculation(0.59);
+      sinkShowDiscountPremium('40%');
+      getPremiumCalculation(0.60);
     } else if (selectedJobNum == 4) {
+      sinkShowDiscountPremium('43%');
       getPremiumCalculation(0.57);
     } else if (selectedJobNum == 5) {
+      sinkShowDiscountPremium('45%');
       getPremiumCalculation(0.55);
-    } else if(selectedJobNum == null) {
-      getPremiumCalculation(0.0);
-    } else if(selectedJobNum == 6 || selectedJobNum >= 7) {
+    } else if (selectedJobNum == 6 || selectedJobNum >= 7) {
+      sinkShowDiscountPremium('51%');
       getPremiumCalculation(0.49);
     }
   }
@@ -97,6 +109,10 @@ class HotJobBloc extends BlocBase {
   Function(String) get sinkSubTotal => _subTotal.sink.add;
 
   Function(String) get sinkSubTotalPlusVat => _subTotalPlusVat.sink.add;
+
+  Function(String) get sinkShowDiscountBasic => _showDiscountForBasic.sink.add;
+
+  Function(String) get sinkShowDiscountPremium => _showDiscountForPremium.sink.add;
 
   //--------------------------------------------------------------------
 
@@ -168,7 +184,6 @@ class HotJobBloc extends BlocBase {
   void calculateSubTotal() {
     subTotal = calculatedBasicFee + calculatedPremiumFee;
     sinkSubTotal(oCcy.format(subTotal).toString());
-    print('HHHH $subTotal');
   }
 
   void calculateVat() {
@@ -191,6 +206,8 @@ class HotJobBloc extends BlocBase {
     _subTotal.close();
     _subTotalPlusVat.close();
     _vat.close();
+    _showDiscountForBasic.close();
+    _showDiscountForPremium.close();
   }
 
   void clearAllData() {
@@ -201,11 +218,12 @@ class HotJobBloc extends BlocBase {
     _subTotal.value = null;
     _subTotalPlusVat.value = null;
     _vat.value = null;
-    jobNum = 0;
     calculatedBasicFee = 0;
     calculatedPremiumFee = 0;
     subTotal = 0;
     subTotalVat = 0;
     subTotalPlusVatAmount = 0;
+    _showDiscountForBasic.value = null;
+    _showDiscountForPremium.value = null;
   }
 }

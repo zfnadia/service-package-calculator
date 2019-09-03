@@ -150,7 +150,7 @@ class Commons {
       children: <Widget>[
         Container(
             margin: EdgeInsets.only(top: 5.0, right: 15.0),
-            child: Text('$discountAmount% discount appplied',
+            child: Text('$discountAmount discount appplied',
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.red,
@@ -158,5 +158,92 @@ class Commons {
                     fontStyle: FontStyle.italic))),
       ],
     );
+  }
+
+  static Widget cvCount(String cvNum, String cvPrice) {
+    return Container(
+      margin: EdgeInsets.only(right: 15.0),
+      child: Row(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(right: 10.0),
+                  child: Icon(Icons.check_circle_outline)),
+              Text('CVs: $cvNum',
+                  style: TextStyle(fontSize: 20.0, color: Colors.black87))
+            ],
+          ),
+          Spacer(),
+          Text('$cvPrice  BDT',
+              style: TextStyle(fontSize: 20.0, color: Colors.black87))
+        ],
+      ),
+    );
+  }
+
+  static Widget validitySelection(snapshot, Stream stream, Function changeFunc) {
+    if (snapshot.hasData && snapshot.data != null) {
+      List<int> validMonthList = snapshot.data.toList();
+      print('KKKKKKKKK $validMonthList');
+      return Row(
+        children: <Widget>[
+          Text('Validity',
+              style: TextStyle(fontSize: 20.0, color: Colors.black87)),
+          Spacer(),
+          Row(
+            children: <Widget>[
+              Container(
+                width: 130.0,
+                height: 80,
+                margin: EdgeInsets.only(right: 6.0),
+                padding: EdgeInsets.all(2.0),
+                child: StreamBuilder(
+                  stream: stream,
+                  initialData: '6',
+                  builder: (context, snapshot) {
+                    print('SELECTED ITEM ${snapshot.data}');
+                    return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            snapshot.data == null ? 0 : validMonthList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 55.0,
+                            height: 50.0,
+                            color: snapshot.data is String &&
+                                snapshot.data == validMonthList[index].toString()
+                                ? Colors.blue
+                                : Colors.red,
+                            margin: EdgeInsets.only(left: 3.0, right: 3.0),
+                            child: ButtonTheme(
+                              shape: CircleBorder(
+                                  side: BorderSide(color: Colors.grey)),
+                              child: RaisedButton(
+                                child: Text('${validMonthList[index]}'),
+                                splashColor: Colors.red,
+                                color: Colors.white,
+                                onPressed: () {
+                                  if (snapshot.data is String &&
+                                      snapshot.data == validMonthList[index]) {
+                                    changeFunc('');
+                                  } else {
+                                    changeFunc(validMonthList[index].toString());
+                                  }
+                                },
+                              ),
+                            ),
+                          );;
+                        });
+                  }
+                ),
+              )
+            ],
+          ),
+        ],
+      );
+    } else {
+      return Text('');
+    }
   }
 }
