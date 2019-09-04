@@ -22,14 +22,6 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
           'Basic Job',
           style: TextStyle(color: Colors.black87),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
       ),
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,7 +46,8 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                           basicJobBloc.basicJobNum,
                           basicJobBloc.sinkBasicJobNumber,
                           basicJobBloc.incrementJobNum,
-                          basicJobBloc.decrementJobNum),
+                          basicJobBloc.decrementJobNum,
+                          '0'),
                       SizedBox(
                         height: 30.0,
                       ),

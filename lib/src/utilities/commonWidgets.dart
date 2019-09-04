@@ -25,7 +25,7 @@ class Commons {
   }
 
   static Widget editJobAmount(String title, Stream stream,
-      Function changeFunction, Function inc, Function dec) {
+      Function changeFunction, Function inc, Function dec, String init) {
     final _controller = TextEditingController();
     return Row(
       children: <Widget>[
@@ -48,6 +48,7 @@ class Commons {
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: StreamBuilder(
                   stream: stream,
+                  initialData: init,
                   builder: (context, snapshot) {
                     if (snapshot.data.toString() != _controller.text &&
                         snapshot.data.toString() != null &&
@@ -181,14 +182,16 @@ class Commons {
       ),
     );
   }
+
 //snapshot, getSelectedMonth, sinkSelectedMonth
-  static Widget validitySelection(snapshot, Stream stream, Function changeFunc) {
+  static Widget validitySelection(
+      snapshot, Stream stream, Function changeFunc) {
     if (snapshot.hasData && snapshot.data != null) {
       List<int> validMonthList = snapshot.data.toList();
       print('KKKKKKKKK $validMonthList');
       return Row(
         children: <Widget>[
-          Text('Validity',
+          Text('Validity (Month)',
               style: TextStyle(fontSize: 20.0, color: Colors.black87)),
           Spacer(),
           Row(
@@ -199,44 +202,51 @@ class Commons {
                 margin: EdgeInsets.only(right: 6.0),
                 padding: EdgeInsets.all(2.0),
                 child: StreamBuilder(
-                  stream: stream,
-                  initialData: '6',
-                  builder: (context, snapshot) {
-                    print('SELECTED ITEM ${snapshot.data}');
-                    return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            snapshot.data == null ? 0 : validMonthList.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: 55.0,
-                            height: 50.0,
-                            color: snapshot.data is String &&
-                                snapshot.data == validMonthList[index].toString()
-                                ? Colors.blue
-                                : Colors.red,
-                            margin: EdgeInsets.only(left: 3.0, right: 3.0),
-                            child: ButtonTheme(
-                              shape: CircleBorder(
-                                  side: BorderSide(color: Colors.grey)),
+                    stream: stream,
+                    initialData: '6',
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              snapshot.data == null ? 0 : validMonthList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: 50.0,
+                              height: 50.0,
+                              decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              margin: EdgeInsets.only(left: 3.0, right: 3.0),
                               child: RaisedButton(
-                                child: Text('${validMonthList[index]}'),
-                                splashColor: Colors.red,
-                                color: Colors.white,
+                                child: Text(
+                                  '${validMonthList[index]}',
+                                  style: TextStyle(fontSize: 14.0, color: snapshot.data is String &&
+                                      snapshot.data ==
+                                          validMonthList[index].toString()
+                                      ? Colors.white
+                                      : Colors.black54),
+                                ),
+                                splashColor: Colors.grey,
+                                shape: CircleBorder(),
+                                color: snapshot.data is String &&
+                                        snapshot.data ==
+                                            validMonthList[index].toString()
+                                    ? Colors.green
+                                    : Colors.white70,
                                 onPressed: () {
                                   if (snapshot.data is String &&
                                       snapshot.data == validMonthList[index]) {
                                     changeFunc('');
                                   } else {
-                                    changeFunc(validMonthList[index].toString());
+                                    changeFunc(
+                                        validMonthList[index].toString());
                                   }
                                 },
                               ),
-                            ),
-                          );;
-                        });
-                  }
-                ),
+                            );
+                            ;
+                          });
+                    }),
               )
             ],
           ),
@@ -246,8 +256,4 @@ class Commons {
       return Text('');
     }
   }
-
-
-
-
 }

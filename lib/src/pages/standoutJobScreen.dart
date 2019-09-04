@@ -22,14 +22,6 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
           'Standout Job',
           style: TextStyle(color: Colors.black87),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
       ),
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -55,7 +47,8 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                           standoutJobBloc.getBasicJobNum,
                           standoutJobBloc.sinkBasicJobNumber,
                           standoutJobBloc.incrementBasicJobNum,
-                          standoutJobBloc.decrementBasicJobNum),
+                          standoutJobBloc.decrementBasicJobNum,
+                          '0'),
                       SizedBox(
                         height: 20.0,
                       ),
@@ -78,7 +71,8 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                           standoutJobBloc.getPremiumJobNum,
                           standoutJobBloc.sinkPremiumJobNumber,
                           standoutJobBloc.incrementPremiumJobNum,
-                          standoutJobBloc.decrementPremiumJobNum),
+                          standoutJobBloc.decrementPremiumJobNum,
+                          '0'),
                       SizedBox(
                         height: 20.0,
                       ),
@@ -102,24 +96,26 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                         height: 30.0,
                       ),
                       StreamBuilder(
-                        stream: standoutJobBloc.getSubTotal,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount('Sub Total', snapshot.hasData && snapshot.data != null
-                              ? '${snapshot.data}'
-                              : '0.0');
-                        }
-                      ),
+                          stream: standoutJobBloc.getSubTotal,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'Sub Total',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
                       SizedBox(
                         height: 30.0,
                       ),
                       StreamBuilder(
-                        stream: standoutJobBloc.getVat,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount('VAT (5%)', snapshot.hasData && snapshot.data != null
-                              ? '${snapshot.data}'
-                              : '0.0');
-                        }
-                      ),
+                          stream: standoutJobBloc.getVat,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'VAT (5%)',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
                       SizedBox(
                         height: 30.0,
                       ),
@@ -129,13 +125,13 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
               ),
             ),
             StreamBuilder(
-              stream: standoutJobBloc.getSubTotalPlusVat,
-              builder: (context, snapshot) {
-                return Commons.totalAmountBottom(snapshot.hasData && snapshot.data != null
-                    ? '${snapshot.data}'
-                    : '0.0');
-              }
-            ),
+                stream: standoutJobBloc.getSubTotalPlusVat,
+                builder: (context, snapshot) {
+                  return Commons.totalAmountBottom(
+                      snapshot.hasData && snapshot.data != null
+                          ? '${snapshot.data}'
+                          : '0.0');
+                }),
           ]),
     );
   }

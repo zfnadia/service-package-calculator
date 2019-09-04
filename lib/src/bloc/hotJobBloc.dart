@@ -112,7 +112,8 @@ class HotJobBloc extends BlocBase {
 
   Function(String) get sinkShowDiscountBasic => _showDiscountForBasic.sink.add;
 
-  Function(String) get sinkShowDiscountPremium => _showDiscountForPremium.sink.add;
+  Function(String) get sinkShowDiscountPremium =>
+      _showDiscountForPremium.sink.add;
 
   //--------------------------------------------------------------------
 

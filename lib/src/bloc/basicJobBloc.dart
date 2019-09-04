@@ -38,7 +38,8 @@ class BasicJobBloc extends BlocBase {
 
   void incrementJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum =
+        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
       sinkBasicJobNumber(jobNum.toString());
@@ -47,14 +48,15 @@ class BasicJobBloc extends BlocBase {
 
   void decrementJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum =
+        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
     if (jobNum > 0) {
       jobNum--;
       sinkBasicJobNumber(jobNum.toString());
     }
   }
 
-  void getBasicJobAmount()async {
+  void getBasicJobAmount() async {
     var servicePackageModel = await repository.getServicePackageModel();
     int basicRate = servicePackageModel.jobListing.basic.rate;
     int jobNum = int.tryParse(_basicJobNum.value);
@@ -70,7 +72,7 @@ class BasicJobBloc extends BlocBase {
     sinkTotalAmount(oCcy.format(totalAmount).toString());
   }
 
-  void getStandOutJobAmount()async {
+  void getStandOutJobAmount() async {
     var servicePackageModel = await repository.getServicePackageModel();
     int basicRate = servicePackageModel.jobListing.standOut.normalRate;
     int jobNum = int.tryParse(_basicJobNum.value);
@@ -86,8 +88,7 @@ class BasicJobBloc extends BlocBase {
     sinkTotalAmount(oCcy.format(totalAmount).toString());
   }
 
-
-  void getStandOutPremiumJobAmount()async {
+  void getStandOutPremiumJobAmount() async {
     var servicePackageModel = await repository.getServicePackageModel();
     int basicRate = servicePackageModel.jobListing.standOut.premiumRate;
     int jobNum = int.tryParse(_basicJobNum.value);
@@ -102,8 +103,6 @@ class BasicJobBloc extends BlocBase {
     sinkVat(oCcy.format(vat).toString());
     sinkTotalAmount(oCcy.format(totalAmount).toString());
   }
-
-
 
   @override
   void dispose() {

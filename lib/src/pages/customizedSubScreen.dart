@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
-import 'package:service_package_calculator/src/pages/hotJobScreen.dart';
-import 'package:service_package_calculator/src/routes/routes.dart';
+import 'package:service_package_calculator/src/bloc/customizedJobBloc.dart';
+import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class CustomizedSubscription extends StatelessWidget {
+class CustomizedSubscription extends StatefulWidget {
+  @override
+  _CustomizedSubscriptionState createState() => _CustomizedSubscriptionState();
+}
+
+class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
+  CustomizedJobBloc customizedJobBloc;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -16,14 +22,6 @@ class CustomizedSubscription extends StatelessWidget {
           'Bulk Subscription: \nCustomized',
           style: TextStyle(color: Colors.black87),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,27 +39,72 @@ class CustomizedSubscription extends StatelessWidget {
                   SizedBox(
                     height: 20.0,
                   ),
-//                  BasicJobSubscription.editJobAmount('Basic Jobs', context),
+                  Commons.editJobAmount(
+                      'Basic Jobs',
+                      customizedJobBloc.getBasicJobNum,
+                      customizedJobBloc.sinkBasicJobNumber,
+                      customizedJobBloc.incrementBasicJobNum,
+                      customizedJobBloc.decrementBasicJobNum,
+                      '5'),
                   SizedBox(
                     height: 30.0,
                   ),
                   //Amount row
-                  Commons.showAmount('Amount', '44,250'),
-                  Commons.showDiscount('30'),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getBasicJobFee,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount(
+                            'Amount',
+                            snapshot.hasData && snapshot.data != null
+                                ? '${snapshot.data}'
+                                : '0.0');
+                      }),
+                  StreamBuilder(
+                      stream: customizedJobBloc.showDiscountForBasic,
+                      builder: (context, snapshot) {
+                        return Commons.showDiscount('${snapshot.data}%');
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),
-//                  BasicJobSubscription.editJobAmount('Standout Jobs', context),
+                  Commons.editJobAmount(
+                      'Standout Jobs',
+                      customizedJobBloc.getStandoutJobNum,
+                      customizedJobBloc.sinkStandoutJobNumber,
+                      customizedJobBloc.incrementStandoutJobNum,
+                      customizedJobBloc.decrementStandoutJobNum,
+                      '5'),
                   SizedBox(
                     height: 30.0,
                   ),
                   //Amount row
-                  Commons.showAmount('Amount', '44,250'),
-                  Commons.showDiscount('30'),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getStandoutJobFee,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount(
+                            'Amount',
+                            snapshot.hasData && snapshot.data != null
+                                ? '${snapshot.data}'
+                                : '0.0');
+                      }),
+                  StreamBuilder(
+                      stream: customizedJobBloc.showDiscountForStandout,
+                      builder: (context, snapshot) {
+                        return Commons.showDiscount('${snapshot.data}%');
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),
-//                  Commons.cvCount(),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getCVNum,
+                      builder: (context, cvNumSnapshot) {
+                        return StreamBuilder(
+                            stream: customizedJobBloc.getCVFee,
+                            builder: (context, cvFeeSnapshot) {
+                              return Commons.cvCount('${cvNumSnapshot.data}',
+                                  '${cvFeeSnapshot.data}');
+                            });
+                      }),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -75,11 +118,19 @@ class CustomizedSubscription extends StatelessWidget {
                   SizedBox(
                     height: 30.0,
                   ),
-                  Commons.showAmount('Sub Total', '2,212.5'),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getSubTotal,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount('Sub Total', snapshot.data);
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),
-                  Commons.showAmount('VAT (5%)', '2,212.5'),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getVatOnSubTotal,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount('VAT (5%)', snapshot.data);
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -87,9 +138,27 @@ class CustomizedSubscription extends StatelessWidget {
               )
             ],
           )),
-          Commons.totalAmountBottom('46,462.5'),
+          StreamBuilder(
+              stream: customizedJobBloc.getSubTotalPlusVat,
+              builder: (context, snapshot) {
+                return Commons.totalAmountBottom(snapshot.data);
+              }),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    customizedJobBloc.clearAllData();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    customizedJobBloc = BlocProvider.of(context);
+    customizedJobBloc.sinkBasicJobNumber('5');
+    customizedJobBloc.sinkStandoutJobNumber('5');
   }
 }

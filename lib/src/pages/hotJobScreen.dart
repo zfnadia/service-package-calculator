@@ -23,14 +23,6 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
           'Hot Job',
           style: TextStyle(color: Colors.black87),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +48,8 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         hotJobBloc.getBasicJobNum,
                         hotJobBloc.sinkBasicJobNumber,
                         hotJobBloc.incrementBasicJobNum,
-                        hotJobBloc.decrementBasicJobNum),
+                        hotJobBloc.decrementBasicJobNum,
+                        '0'),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -75,8 +68,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         builder: (context, snapshot) {
                           return snapshot.hasData && snapshot.data != 'false'
                               ? Commons.showDiscount('${snapshot.data}')
-                              : SizedBox(
-                                );
+                              : SizedBox();
                         }),
                     SizedBox(
                       height: 30.0,
@@ -87,7 +79,8 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         hotJobBloc.getPremiumJobNum,
                         hotJobBloc.sinkPremiumJobNumber,
                         hotJobBloc.incrementPremiumJobNum,
-                        hotJobBloc.decrementPremiumJobNum),
+                        hotJobBloc.decrementPremiumJobNum,
+                        '0'),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -106,8 +99,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         builder: (context, snapshot) {
                           return snapshot.hasData && snapshot.data != 'false'
                               ? Commons.showDiscount('${snapshot.data}')
-                              : SizedBox(
-                          );
+                              : SizedBox();
                         }),
                     SizedBox(
                       height: 30.0,

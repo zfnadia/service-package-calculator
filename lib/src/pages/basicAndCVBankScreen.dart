@@ -12,6 +12,7 @@ class BasicAndCVBankSub extends StatefulWidget {
 
 class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
   BasicAndCVBankBloc basicAndCVBankBloc;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -22,14 +23,6 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
           'Bulk Subscription: \nBasic Job and CV Bank',
           style: TextStyle(color: Colors.black87),
         ),
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              routes.goToHomePage(context);
-            }),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,7 +45,8 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                       basicAndCVBankBloc.getBasicJobNum,
                       basicAndCVBankBloc.sinkBasicJobNumber,
                       basicAndCVBankBloc.incrementBasicJobNum,
-                      basicAndCVBankBloc.decrementBasicJobNum),
+                      basicAndCVBankBloc.decrementBasicJobNum,
+                      '5'),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -75,25 +69,26 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                    stream: basicAndCVBankBloc.cvNum,
-                    builder: (context, cvNumSnapshot) {
-                      return StreamBuilder(
-                        stream: basicAndCVBankBloc.cvFee,
-                        builder: (context, cvFeeSnapshot) {
-                          return Commons.cvCount('${cvNumSnapshot.data}', '${cvFeeSnapshot.data}');
-                        }
-                      );
-                    }
-                  ),
+                      stream: basicAndCVBankBloc.cvNum,
+                      builder: (context, cvNumSnapshot) {
+                        return StreamBuilder(
+                            stream: basicAndCVBankBloc.cvFee,
+                            builder: (context, cvFeeSnapshot) {
+                              return Commons.cvCount('${cvNumSnapshot.data}',
+                                  '${cvFeeSnapshot.data}');
+                            });
+                      }),
                   SizedBox(
                     height: 20.0,
                   ),
                   StreamBuilder(
-                    stream: basicAndCVBankBloc.getValidity,
-                    builder: (context, snapshot) {
-                      return Commons.validitySelection(snapshot, basicAndCVBankBloc.getSelectedMonth, basicAndCVBankBloc.sinkSelectedMonth);
-                    }
-                  ),
+                      stream: basicAndCVBankBloc.getValidity,
+                      builder: (context, snapshot) {
+                        return Commons.validitySelection(
+                            snapshot,
+                            basicAndCVBankBloc.getSelectedMonth,
+                            basicAndCVBankBloc.sinkSelectedMonth);
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),

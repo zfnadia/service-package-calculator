@@ -4,15 +4,14 @@ import 'package:service_package_calculator/src/repository.dart';
 import 'package:service_package_calculator/src/utilities/commonMethods.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class BasicAndCVBankBloc extends BlocBase {
+class StandoutAndCVBankBloc extends BlocBase {
   //-------------------BehaviorSubjects-----------------------------------------
-
-  final _basicJobNum = BehaviorSubject<String>();
-  final _basicJobFee = BehaviorSubject<String>();
+  final _standoutJobNum = BehaviorSubject<String>();
+  final _standoutJobFee = BehaviorSubject<String>();
   final _vat = BehaviorSubject<String>();
   final _subTotal = BehaviorSubject<String>();
   final _subTotalPlusVat = BehaviorSubject<String>();
-  final _showDiscountForBasic = BehaviorSubject<String>();
+  final _showDiscountForStandout = BehaviorSubject<String>();
   final _cvNum = BehaviorSubject<String>();
   final _cvFee = BehaviorSubject<String>();
   final _validity = BehaviorSubject<List<int>>();
@@ -20,9 +19,9 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //-----------------------Stream-----------------------------------------------
 
-  Stream<String> get getBasicJobNum => _basicJobNum.stream;
+  Stream<String> get getStandoutJobNum => _standoutJobNum.stream;
 
-  Stream<String> get getBasicJobFee => _basicJobFee.stream;
+  Stream<String> get getStandoutJobFee => _standoutJobFee.stream;
 
   Stream<String> get getVat => _vat.stream;
 
@@ -30,7 +29,7 @@ class BasicAndCVBankBloc extends BlocBase {
 
   Stream<String> get getSubTotalPlusVat => _subTotalPlusVat.stream;
 
-  Stream<String> get showDiscountForBasic => _showDiscountForBasic.stream;
+  Stream<String> get showDiscountForStandout => _showDiscountForStandout.stream;
 
   Stream<String> get cvNum => _cvNum.stream;
 
@@ -42,11 +41,9 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //-----------------------Function---------------------------------------------
 
-  void sinkBasicJobNumber(String jobNum) async {
-    _basicJobNum.sink.add(jobNum);
-
-    //calculationLogic(selectedJobNum, _selectedMonth.value);
-    int selectedJobNum = int.tryParse(_basicJobNum.value);
+  void sinkStandoutJobNumber(String jobNum) async {
+    _standoutJobNum.sink.add(jobNum);
+    int selectedJobNum = int.tryParse(_standoutJobNum.value);
     if (selectedJobNum < 20) {
       sinkValidity(Constants.sixMonths);
       sinkSelectedMonth('6');
@@ -67,11 +64,11 @@ class BasicAndCVBankBloc extends BlocBase {
 
   void sinkSelectedMonth(String month) {
     _selectedMonth.sink.add(month);
-    int selectedJobNum = int.tryParse(_basicJobNum.value);
+    int selectedJobNum = int.tryParse(_standoutJobNum.value);
     getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum);
   }
 
-  Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
+  Function(String) get sinkStandoutJobFee => _standoutJobFee.sink.add;
 
   Function(String) get sinkVat => _vat.sink.add;
 
@@ -79,7 +76,8 @@ class BasicAndCVBankBloc extends BlocBase {
 
   Function(String) get sinkSubTotalPlusVat => _subTotalPlusVat.sink.add;
 
-  Function(String) get sinkShowDiscountBasic => _showDiscountForBasic.sink.add;
+  Function(String) get sinkShowDiscountStandout =>
+      _showDiscountForStandout.sink.add;
 
   Function(String) get sinkCVNum => _cvNum.sink.add;
 
@@ -89,56 +87,49 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //--------------------------------------------------------------------
 
-  void incrementBasicJobNum() {
+  void incrementStandoutJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum = int.tryParse(_standoutJobNum.value);
     if (jobNum >= 5) {
       jobNum++;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkStandoutJobNumber(jobNum.toString());
     }
   }
 
-  void decrementBasicJobNum() {
+  void decrementStandoutJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum = int.tryParse(_standoutJobNum.value);
     if (jobNum > 5) {
       jobNum--;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkStandoutJobNumber(jobNum.toString());
     }
   }
 
   void getMonthAndJobNumCalculation(String month, int selectedJobNum) async {
-    print('GOT VALUE month= $month selectedJobNum= $selectedJobNum');
-
     var servicePackageModel = await repository.getServicePackageModel();
-
     if (selectedJobNum == null) {
       selectedJobNum = 0;
     }
-
     var servicePackage = CommonMethods.getServicePackageRate(
-        month, selectedJobNum, servicePackageModel.jobListing.bulk[0].rates);
-
-    print('GOT VALUE Final = ${servicePackage.rate}');
-
+        month, selectedJobNum, servicePackageModel.jobListing.bulk[1].rates);
     int vat = servicePackageModel.vat;
-    int basicRate = servicePackage.rate;
+    int standoutRate = servicePackage.rate;
     int discount = servicePackage.discount;
     int cvNum = servicePackage.cv;
     int cvFee = servicePackage.cvFee;
-    int calculatedBasicFee = (selectedJobNum * basicRate);
+    int calculatedBasicFee = (selectedJobNum * standoutRate);
     int subTotal = calculatedBasicFee + cvFee;
     double subTotalVat = subTotal * (vat / 100);
     double subTotalPlusVat = subTotal + subTotalVat;
-    sinkBasicJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
-    sinkShowDiscountBasic(Constants.oCcy1.format(discount).toString());
+    sinkStandoutJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
+    sinkShowDiscountStandout(Constants.oCcy1.format(discount).toString());
     sinkCVNum(Constants.oCcy1.format(cvNum).toString());
     sinkCVFee(Constants.oCcy.format(cvFee).toString());
     sinkSubTotal(Constants.oCcy.format(subTotal).toString());
     sinkVat(Constants.oCcy.format(subTotalVat).toString());
     sinkSubTotalPlusVat(Constants.oCcy.format(subTotalPlusVat).toString());
     print('VAT $vat');
-    print('basicRate $basicRate');
+    print('standoutRate $standoutRate');
     print('discount $discount');
     print('cvNum $cvNum');
     print('cvFee $cvFee');
@@ -150,12 +141,12 @@ class BasicAndCVBankBloc extends BlocBase {
 
   @override
   void dispose() {
-    _basicJobNum.close();
-    _basicJobFee.close();
+    _standoutJobNum.close();
+    _standoutJobFee.close();
     _subTotal.close();
     _subTotalPlusVat.close();
     _vat.close();
-    _showDiscountForBasic.close();
+    _showDiscountForStandout.close();
     _cvNum.close();
     _cvFee.close();
     _validity.close();
@@ -163,12 +154,12 @@ class BasicAndCVBankBloc extends BlocBase {
   }
 
   void clearAllData() {
-    _basicJobNum.value = '0';
-    _basicJobFee.value = null;
+    _standoutJobNum.value = '0';
+    _standoutJobFee.value = null;
     _subTotal.value = null;
     _subTotalPlusVat.value = null;
     _vat.value = null;
-    _showDiscountForBasic.value = null;
+    _showDiscountForStandout.value = null;
     _cvNum.value = null;
     _cvFee.value = null;
     _validity.value = null;
