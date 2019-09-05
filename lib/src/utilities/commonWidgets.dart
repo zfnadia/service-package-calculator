@@ -129,7 +129,7 @@ class Commons {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text('Amount to pay:   ',
+                          Text('Amount to pay:    ',
                               style: TextStyle(
                                   fontSize: 20.0,
                                   color: Colors.black87,
