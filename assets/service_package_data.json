@@ -21,6 +21,15 @@
         "name": "Basic Listing and CV Bank",
         "rates": [
           {
+            "min": 0,
+            "max": 4,
+            "duration": 0,
+            "discount": 0,
+            "rate": 0,
+            "cv": 0,
+            "cv_fee": 0
+          },
+          {
             "min": 5,
             "max": 10,
             "duration": 6,
@@ -97,6 +106,15 @@
       {
         "name": "Standout Listing and CV Bank",
         "rates": [
+          {
+            "min": 0,
+            "max": 4,
+            "duration": 0,
+            "discount": 0,
+            "rate": 0,
+            "cv": 0,
+            "cv_fee": 0
+          },
           {
             "min": 5,
             "max": 10,

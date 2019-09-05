@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 class BasicJobBloc extends BlocBase {
   //to get comma separated currency value
   final oCcy = NumberFormat("#,##0.00", "en_US");
-  int jobNum = 0;
-
   //-------------------BehaviorSubjects-----------------------------------------
   final _basicJobNum = BehaviorSubject<String>();
   final _basicJobFee = BehaviorSubject<String>();
@@ -24,7 +22,6 @@ class BasicJobBloc extends BlocBase {
   Stream<String> get totalAmount => _totalAmount.stream;
 
   //-----------------------Function---------------------------------------------
-  //Function(String) get sinkBasicJobNum => _basicJobNum.sink.add;
   Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
 
   Function(String) get sinkVat => _vat.sink.add;
@@ -59,38 +56,6 @@ class BasicJobBloc extends BlocBase {
   void getBasicJobAmount() async {
     var servicePackageModel = await repository.getServicePackageModel();
     int basicRate = servicePackageModel.jobListing.basic.rate;
-    int jobNum = int.tryParse(_basicJobNum.value);
-    if (jobNum == null) {
-      jobNum = 0;
-    }
-
-    int calculatedAmount = (jobNum * basicRate);
-    double vat = calculatedAmount * 0.05;
-    double totalAmount = calculatedAmount + vat;
-    sinkBasicJobFee(oCcy.format(calculatedAmount).toString());
-    sinkVat(oCcy.format(vat).toString());
-    sinkTotalAmount(oCcy.format(totalAmount).toString());
-  }
-
-  void getStandOutJobAmount() async {
-    var servicePackageModel = await repository.getServicePackageModel();
-    int basicRate = servicePackageModel.jobListing.standOut.normalRate;
-    int jobNum = int.tryParse(_basicJobNum.value);
-    if (jobNum == null) {
-      jobNum = 0;
-    }
-
-    int calculatedAmount = (jobNum * basicRate);
-    double vat = calculatedAmount * 0.05;
-    double totalAmount = calculatedAmount + vat;
-    sinkBasicJobFee(oCcy.format(calculatedAmount).toString());
-    sinkVat(oCcy.format(vat).toString());
-    sinkTotalAmount(oCcy.format(totalAmount).toString());
-  }
-
-  void getStandOutPremiumJobAmount() async {
-    var servicePackageModel = await repository.getServicePackageModel();
-    int basicRate = servicePackageModel.jobListing.standOut.premiumRate;
     int jobNum = int.tryParse(_basicJobNum.value);
     if (jobNum == null) {
       jobNum = 0;

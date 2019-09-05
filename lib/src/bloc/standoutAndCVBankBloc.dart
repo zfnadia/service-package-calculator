@@ -42,9 +42,16 @@ class StandoutAndCVBankBloc extends BlocBase {
   //-----------------------Function---------------------------------------------
 
   void sinkStandoutJobNumber(String jobNum) async {
+
     _standoutJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_standoutJobNum.value);
-    if (selectedJobNum < 20) {
+    if (selectedJobNum == null) {
+      sinkValidity(Constants.empty);
+      sinkSelectedMonth('0');
+    } else if (selectedJobNum >= 0 && selectedJobNum < 5) {
+      sinkValidity(Constants.empty);
+      sinkSelectedMonth('0');
+    } else if (selectedJobNum < 20) {
       sinkValidity(Constants.sixMonth);
       sinkSelectedMonth('6');
     } else if (selectedJobNum == 20) {
@@ -89,8 +96,8 @@ class StandoutAndCVBankBloc extends BlocBase {
 
   void incrementStandoutJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_standoutJobNum.value);
-    if (jobNum >= 5) {
+    jobNum = int.tryParse(_standoutJobNum.value == null || _standoutJobNum.value.isEmpty? '0' : _standoutJobNum.value);
+    if (jobNum >= 0) {
       jobNum++;
       sinkStandoutJobNumber(jobNum.toString());
     }
@@ -98,8 +105,8 @@ class StandoutAndCVBankBloc extends BlocBase {
 
   void decrementStandoutJobNum() {
     int jobNum = 0;
-    jobNum = int.tryParse(_standoutJobNum.value);
-    if (jobNum > 5) {
+    jobNum = int.tryParse(_standoutJobNum.value == null || _standoutJobNum.value.isEmpty? '0' : _standoutJobNum.value);
+    if (jobNum > 0) {
       jobNum--;
       sinkStandoutJobNumber(jobNum.toString());
     }
@@ -154,7 +161,7 @@ class StandoutAndCVBankBloc extends BlocBase {
   }
 
   void clearAllData() {
-    _standoutJobNum.value = '0';
+    _standoutJobNum.value = null;
     _standoutJobFee.value = null;
     _subTotal.value = null;
     _subTotalPlusVat.value = null;

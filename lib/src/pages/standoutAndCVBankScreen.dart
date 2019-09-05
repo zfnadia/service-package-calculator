@@ -41,7 +41,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                       standoutAndCVBankBloc.sinkStandoutJobNumber,
                       standoutAndCVBankBloc.incrementStandoutJobNum,
                       standoutAndCVBankBloc.decrementStandoutJobNum,
-                      '5'),
+                      '0'),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -144,6 +144,6 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     standoutAndCVBankBloc = BlocProvider.of(context);
-    standoutAndCVBankBloc.sinkStandoutJobNumber('5');
+    standoutAndCVBankBloc.sinkStandoutJobNumber('0');
   }
 }

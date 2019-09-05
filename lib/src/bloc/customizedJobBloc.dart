@@ -64,10 +64,12 @@ class CustomizedJobBloc extends BlocBase {
   //-----------------------Function---------------------------------------------
   //-----------------------Basic-----------------------------------------
   void sinkBasicJobNumber(String jobNum) async {
-    var jn = 0;
-    jn = int.tryParse(jobNum == null || jobNum.isEmpty ? '0' : jobNum);
+//    var jobNumber = 0;
+//    jobNumber = int.tryParse(jobNum == null || jobNum.isEmpty ? '0' : jobNum);
 
-    _basicJobNum.sink.add(jn.toString());
+    _basicJobNum.sink.add(jobNum.toString());
+    print('LLLLLLLLLLLLLLLLLLBBB ${_basicJobNum.value}');
+
     getMonthAndJobNumCalculation(findMonthToSink(_basicJobNum.value),
         int.tryParse(_basicJobNum.value), 0);
   }
@@ -114,8 +116,8 @@ class CustomizedJobBloc extends BlocBase {
   void incrementBasicJobNum() {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '5' : _basicJobNum.value);
-    if (jobNum >= 5) {
+        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+    if (jobNum >= 0) {
       jobNum++;
       sinkBasicJobNumber(jobNum.toString());
     }
@@ -124,8 +126,8 @@ class CustomizedJobBloc extends BlocBase {
   void decrementBasicJobNum() {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '5' : _basicJobNum.value);
-    if (jobNum > 5) {
+        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+    if (jobNum > 0) {
       jobNum--;
       sinkBasicJobNumber(jobNum.toString());
     }
@@ -134,8 +136,8 @@ class CustomizedJobBloc extends BlocBase {
   void incrementStandoutJobNum() {
     int jobNum = 0;
     jobNum = int.tryParse(
-        _standoutJobNum.value == null ? '5' : _standoutJobNum.value);
-    if (jobNum >= 5) {
+        _standoutJobNum.value == null ? '0' : _standoutJobNum.value);
+    if (jobNum >= 0) {
       jobNum++;
       sinkStandoutJobNumber(jobNum.toString());
     }
@@ -144,8 +146,8 @@ class CustomizedJobBloc extends BlocBase {
   void decrementStandoutJobNum() {
     int jobNum = 0;
     jobNum = int.tryParse(
-        _standoutJobNum.value == null ? '5' : _standoutJobNum.value);
-    if (jobNum > 5) {
+        _standoutJobNum.value == null ? '0' : _standoutJobNum.value);
+    if (jobNum > 0) {
       jobNum--;
       sinkStandoutJobNumber(jobNum.toString());
     }
@@ -155,15 +157,19 @@ class CustomizedJobBloc extends BlocBase {
     int basicJobNum = 0;
     int standoutJobNum = 0;
     basicJobNum =
-        int.tryParse(_basicJobNum.value == null ? '5' : _basicJobNum.value);
+        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     standoutJobNum = int.tryParse(
-        _standoutJobNum.value == null ? '5' : _standoutJobNum.value);
+        _standoutJobNum.value == null || _standoutJobNum.value.isEmpty ? '0' : _standoutJobNum.value);
     return basicJobNum + standoutJobNum;
   }
 
   String findMonthToSink(String jobNum) {
     int selectedJobNum = int.tryParse(jobNum);
-    if (selectedJobNum < 20) {
+    if (selectedJobNum == null) {
+      return '0';
+    } else if (selectedJobNum >= 0 && selectedJobNum < 5) {
+      return '0';
+    } else if (selectedJobNum < 20) {
       return '6';
     } else if (selectedJobNum >= 20 && selectedJobNum < 30) {
       return '9';
@@ -174,7 +180,13 @@ class CustomizedJobBloc extends BlocBase {
   }
 
   void validityCalculation(int selectedJobNum) async {
-    if (selectedJobNum < 20) {
+    if (selectedJobNum == null) {
+      sinkValidity(Constants.empty);
+      sinkSelectedMonth('0');
+    } else if (selectedJobNum >= 0 && selectedJobNum < 5) {
+      sinkValidity(Constants.empty);
+      sinkSelectedMonth('0');
+    } else if (selectedJobNum < 20) {
       sinkValidity(Constants.sixMonth);
       sinkSelectedMonth('6');
     } else if (selectedJobNum == 20) {
@@ -265,16 +277,16 @@ class CustomizedJobBloc extends BlocBase {
   }
 
   void clearAllData() {
-    _basicJobNum.value = '5';
+    _basicJobNum.value = null;
     _basicJobFee.value = null;
     _showDiscountForBasic.value = null;
-    _selectedMonthBasic.value = '0';
-    _standoutJobNum.value = '5';
+    _selectedMonthBasic.value = null;
+    _standoutJobNum.value = null;
     _standoutJobFee.value = null;
     _showDiscountForStandout.value = null;
     _cvNum.value = null;
     _cvFee.value = null;
-    _selectedMonthStandout.value = '0';
+    _selectedMonthStandout.value = null;
     _subTotal.value = null;
     _subTotalPlusVat.value = null;
     _vatOnSubTotal.value = null;

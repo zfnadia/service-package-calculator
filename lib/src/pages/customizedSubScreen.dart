@@ -41,7 +41,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                       customizedJobBloc.sinkBasicJobNumber,
                       customizedJobBloc.incrementBasicJobNum,
                       customizedJobBloc.decrementBasicJobNum,
-                      '5'),
+                      '0'),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -69,7 +69,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                       customizedJobBloc.sinkStandoutJobNumber,
                       customizedJobBloc.incrementStandoutJobNum,
                       customizedJobBloc.decrementStandoutJobNum,
-                      '5'),
+                      '0'),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -161,7 +161,17 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     customizedJobBloc = BlocProvider.of(context);
-    customizedJobBloc.sinkBasicJobNumber('5');
-    customizedJobBloc.sinkStandoutJobNumber('5');
+    customizedJobBloc.sinkBasicJobNumber('0');
+    customizedJobBloc.sinkStandoutJobNumber('0');
+
+    customizedJobBloc.sinkBasicJobFee('0.0');
+    customizedJobBloc.sinkStandoutJobFee('0.0');
+    customizedJobBloc.sinkShowDiscountBasic('0');
+    customizedJobBloc.sinkShowDiscountStandout('0');
+    customizedJobBloc.sinkCVNum('0');
+    customizedJobBloc.sinkCVFee('0');
+    customizedJobBloc.sinkSubTotal('0.0');
+    customizedJobBloc.sinkVatOnSubTotal('0.0');
+    customizedJobBloc.sinkSubTotalPlusVat('0.0');
   }
 }
