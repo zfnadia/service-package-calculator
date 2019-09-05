@@ -43,7 +43,6 @@ class Commons {
             Container(
               height: 40.0,
               width: 100.0,
-              padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                   border: Border.all(color: Constants.primaryColor),
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -58,21 +57,23 @@ class Commons {
                       _controller.selection = TextSelection.collapsed(
                           offset: _controller.text.length);
                     }
-                    return TextField(
-                      controller: _controller,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(4),
-                        WhitelistingTextInputFormatter.digitsOnly,
-                      ],
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration.collapsed(hintText: ''),
-                      cursorColor: Constants.primaryColor,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        changeFunction(value);
-                        _controller.selection =
-                            TextSelection.collapsed(offset: value.length);
-                      },
+                    return Center(
+                      child: TextField(
+                        controller: _controller,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(4),
+                          WhitelistingTextInputFormatter.digitsOnly,
+                        ],
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration.collapsed(hintText: ''),
+                        cursorColor: Constants.primaryColor,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          changeFunction(value);
+                          _controller.selection =
+                              TextSelection.collapsed(offset: value.length);
+                        },
+                      ),
                     );
                   }),
             ),
