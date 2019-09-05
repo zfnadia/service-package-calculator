@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
     'Bulk Subscription: Standout Job and CV Bank',
     'Bulk Subscription: Customized',
   ];
+
   List<Widget> pageList = [
     BasicJobSubscription(),
     StandoutSubscription(),
