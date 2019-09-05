@@ -69,8 +69,8 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                         return StreamBuilder(
                             stream: standoutAndCVBankBloc.cvFee,
                             builder: (context, cvFeeSnapshot) {
-                              return Commons.cvCount('${cvNumSnapshot.data}',
-                                  '${cvFeeSnapshot.data}');
+//                              return Commons.cvCount('${cvNumSnapshot.data}',
+//                                  '${cvFeeSnapshot.data}');
                             });
                       }),
                   SizedBox(

@@ -69,8 +69,15 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                         return StreamBuilder(
                             stream: basicAndCVBankBloc.cvFee,
                             builder: (context, cvFeeSnapshot) {
-                              return Commons.cvCount('${cvNumSnapshot.data}',
-                                  '${cvFeeSnapshot.data}');
+                              return StreamBuilder(
+                                stream: basicAndCVBankBloc.getcvStatus,
+                                builder: (context, cvStatusSnapshot) {
+                                  print('CV STATUS ${cvStatusSnapshot.data}');
+                                  return Commons.cvCount('${cvNumSnapshot.data}',
+                                      '${cvFeeSnapshot.data}', cvStatusSnapshot.data,
+                                  basicAndCVBankBloc.sinkCVStatus);
+                                }
+                              );
                             });
                       }),
                   SizedBox(
@@ -145,5 +152,6 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
     super.didChangeDependencies();
     basicAndCVBankBloc = BlocProvider.of(context);
     basicAndCVBankBloc.sinkBasicJobNumber('0');
+    basicAndCVBankBloc.sinkCVStatus(false);
   }
 }

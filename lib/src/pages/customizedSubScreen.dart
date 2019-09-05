@@ -97,8 +97,8 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                         return StreamBuilder(
                             stream: customizedJobBloc.getCVFee,
                             builder: (context, cvFeeSnapshot) {
-                              return Commons.cvCount('${cvNumSnapshot.data}',
-                                  '${cvFeeSnapshot.data}');
+//                              return Commons.cvCount('${cvNumSnapshot.data}',
+//                                  '${cvFeeSnapshot.data}');
                             });
                       }),
                   SizedBox(

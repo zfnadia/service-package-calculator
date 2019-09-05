@@ -186,16 +186,23 @@ class Commons {
     );
   }
 
-  static Widget cvCount(String cvNum, String cvPrice) {
+  static Widget cvCount(String cvNum, String cvPrice, bool cvStatus, Function changeFunc) {
+    bool isChecked = cvStatus;
     return Container(
       margin: EdgeInsets.only(right: 15.0),
       child: Row(
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(right: 10.0),
-                  child: Icon(Icons.check_circle_outline)),
+              Checkbox(
+//                checkColor: Colors.green,
+//                activeColor: Colors.blue,
+                value: isChecked,
+                onChanged: (value) {
+                  isChecked = value;
+                  changeFunc(isChecked);
+                },
+              ),
               Text('CVs: $cvNum',
                   style: TextStyle(fontSize: 20.0, color: Colors.black87))
             ],

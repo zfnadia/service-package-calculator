@@ -17,6 +17,7 @@ class BasicAndCVBankBloc extends BlocBase {
   final _cvFee = BehaviorSubject<String>();
   final _validity = BehaviorSubject<List<int>>();
   final _selectedMonth = BehaviorSubject<String>();
+  final _cvStatus = BehaviorSubject<bool>();
 
   //-----------------------Stream-----------------------------------------------
 
@@ -39,6 +40,8 @@ class BasicAndCVBankBloc extends BlocBase {
   Stream<List<int>> get getValidity => _validity.stream;
 
   Stream<String> get getSelectedMonth => _selectedMonth.stream;
+
+  Stream<bool> get getcvStatus => _cvStatus.stream;
 
   //-----------------------Function---------------------------------------------
 
@@ -94,6 +97,11 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //--------------------------------------------------------------------
 
+  void sinkCVStatus (bool status) {
+    _cvStatus.sink.add(status);
+    int selectedJobNum = int.tryParse(_basicJobNum.value);
+    getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum);
+  }
   void incrementBasicJobNum() {
     int jobNum = 0;
     jobNum =
@@ -132,7 +140,8 @@ class BasicAndCVBankBloc extends BlocBase {
     int cvNum = servicePackage.cv;
     int cvFee = servicePackage.cvFee;
     int calculatedBasicFee = (selectedJobNum * basicRate);
-    int subTotal = calculatedBasicFee + cvFee;
+    int subTotal = calculatedBasicFee + (_cvStatus.value == false ? 0 : cvFee);
+    print('KKKKKKKKKK $subTotal');
     double subTotalVat = subTotal * (vat / 100);
     double subTotalPlusVat = subTotal + subTotalVat;
     sinkBasicJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
