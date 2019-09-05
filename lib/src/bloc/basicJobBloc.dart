@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 class BasicJobBloc extends BlocBase {
   //to get comma separated currency value
-  final oCcy = new NumberFormat("#,##0.00", "en_US");
+  final oCcy = NumberFormat("#,##0.00", "en_US");
   int jobNum = 0;
 
   //-------------------BehaviorSubjects-----------------------------------------

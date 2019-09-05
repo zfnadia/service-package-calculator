@@ -5,7 +5,7 @@ import 'package:service_package_calculator/src/repository.dart';
 
 class HotJobBloc extends BlocBase {
   //to get comma separated currency value
-  final oCcy = new NumberFormat("#,##0.00", "en_US");
+  final oCcy = NumberFormat("#,##0.00", "en_US");
   double calculatedBasicFee = 0;
   double calculatedPremiumFee = 0;
   double subTotal = 0;

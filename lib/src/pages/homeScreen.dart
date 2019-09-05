@@ -75,9 +75,9 @@ class HomeScreen extends StatelessWidget {
         Container(
           height: 150.0,
           width: 150.0,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: new AssetImage('assets/calculator_logo.png'),
+              image: AssetImage('assets/calculator_logo.png'),
 //                fit: BoxFit.fill,
             ),
           ),

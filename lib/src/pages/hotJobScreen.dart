@@ -13,7 +13,6 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text(

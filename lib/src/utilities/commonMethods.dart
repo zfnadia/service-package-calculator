@@ -1,7 +1,5 @@
 import 'package:service_package_calculator/src/model/servicePackageModel.dart';
 
-import '../repository.dart';
-
 class CommonMethods {
   static Rate getServicePackageRate(
       String month, int selectedJobNum, List<Rate> rates) {
