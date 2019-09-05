@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
-import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class StandoutSubscription extends StatefulWidget {
   @override
@@ -17,10 +15,8 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
         title: Text(
           'Standout Job',
-          style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Column(
@@ -36,10 +32,10 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                   Column(
                     children: <Widget>[
                       // Switch button
-                      Commons.switchBDTtoDollar(),
+/*                      Commons.switchBDTtoDollar(),
                       SizedBox(
                         height: 20.0,
-                      ),
+                      ),*/
                       Commons.boldRowTitle('Standout'),
                       //Selected Job Number
                       Commons.editJobAmount(

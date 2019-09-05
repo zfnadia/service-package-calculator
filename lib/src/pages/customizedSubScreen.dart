@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/customizedJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class CustomizedSubscription extends StatefulWidget {
   @override
@@ -17,10 +16,8 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
         title: Text(
           'Bulk Subscription: \nCustomized',
-          style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Column(
@@ -35,10 +32,10 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
               ),
               Column(
                 children: <Widget>[
-                  Commons.switchBDTtoDollar(),
+/*                  Commons.switchBDTtoDollar(),
                   SizedBox(
                     height: 20.0,
-                  ),
+                  ),*/
                   Commons.editJobAmount(
                       'Basic Jobs',
                       customizedJobBloc.getBasicJobNum,
@@ -108,7 +105,14 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                   SizedBox(
                     height: 20.0,
                   ),
-//                  Commons.validitySelection(),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getValidity,
+                      builder: (context, snapshot) {
+                        return Commons.validitySelection(
+                            snapshot,
+                            customizedJobBloc.getSelectedMonth,
+                            customizedJobBloc.sinkSelectedMonth);
+                      }),
                   SizedBox(
                     height: 30.0,
                   ),

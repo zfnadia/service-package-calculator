@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
-import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class BasicJobSubscription extends StatefulWidget {
   @override
@@ -17,10 +15,8 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
         title: Text(
           'Basic Job',
-          style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Column(
@@ -35,11 +31,11 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                   ),
                   Column(
                     children: <Widget>[
-                      // Switch button
+/*                      // Switch button
                       Commons.switchBDTtoDollar(),
                       SizedBox(
                         height: 20.0,
-                      ),
+                      ),*/
                       //Selected Job Number
                       Commons.editJobAmount(
                           'Jobs',

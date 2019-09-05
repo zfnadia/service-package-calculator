@@ -45,19 +45,19 @@ class StandoutAndCVBankBloc extends BlocBase {
     _standoutJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_standoutJobNum.value);
     if (selectedJobNum < 20) {
-      sinkValidity(Constants.sixMonths);
+      sinkValidity(Constants.sixMonth);
       sinkSelectedMonth('6');
     } else if (selectedJobNum == 20) {
       sinkValidity(Constants.sixNineMonths);
       sinkSelectedMonth('9');
     } else if (selectedJobNum > 20 && selectedJobNum < 30) {
-      sinkValidity(Constants.nineMonths);
+      sinkValidity(Constants.nineMonth);
       sinkSelectedMonth('9');
     } else if (selectedJobNum == 30) {
       sinkValidity(Constants.nineTwelveMonths);
       sinkSelectedMonth('12');
     } else if (selectedJobNum > 30) {
-      sinkValidity(Constants.twelveMonths);
+      sinkValidity(Constants.twelveMonth);
       sinkSelectedMonth('12');
     }
   }

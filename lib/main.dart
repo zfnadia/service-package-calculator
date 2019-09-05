@@ -7,7 +7,7 @@ import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/bloc/standoutAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
 import 'package:service_package_calculator/src/pages/homeScreen.dart';
-import 'package:service_package_calculator/src/repository.dart';
+import 'package:service_package_calculator/src/utilities/constants.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
                       bloc: StandoutAndCVBankBloc(),
                       child: BlocProvider(
                           bloc: CustomizedJobBloc(),
-                          child: MaterialApp(home: HomeScreen()
+                          child: MaterialApp(
+                              home: HomeScreen(),
+                            theme: ThemeData(primaryColor: Constants.primaryColor),
                           )
                       )
                   )

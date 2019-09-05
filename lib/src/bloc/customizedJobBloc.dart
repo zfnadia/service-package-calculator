@@ -7,6 +7,7 @@ import '../repository.dart';
 
 class CustomizedJobBloc extends BlocBase {
   //-------------------BehaviorSubjects-----------------------------------------
+  //-------------------Basic-----------------------------------------
   final _basicJobNum = BehaviorSubject<String>();
   final _basicJobFee = BehaviorSubject<String>();
   final _showDiscountForBasic = BehaviorSubject<String>();
@@ -24,6 +25,8 @@ class CustomizedJobBloc extends BlocBase {
   final _subTotal = BehaviorSubject<String>();
   final _vatOnSubTotal = BehaviorSubject<String>();
   final _subTotalPlusVat = BehaviorSubject<String>();
+  final _validity = BehaviorSubject<List<int>>();
+  final _selectedMonth = BehaviorSubject<String>();
 
   //-----------------------Stream-----------------------------------------------
   Stream<String> get getBasicJobNum => _basicJobNum.stream;
@@ -54,8 +57,12 @@ class CustomizedJobBloc extends BlocBase {
 
   Stream<String> get getSubTotalPlusVat => _subTotalPlusVat.stream;
 
-  //-----------------------Function---------------------------------------------
+  Stream<List<int>> get getValidity => _validity.stream;
 
+  Stream<String> get getSelectedMonth => _selectedMonth.stream;
+
+  //-----------------------Function---------------------------------------------
+  //-----------------------Basic-----------------------------------------
   void sinkBasicJobNumber(String jobNum) async {
     var jn = 0;
     jn = int.tryParse(jobNum == null || jobNum.isEmpty ? '0' : jobNum);
@@ -64,6 +71,12 @@ class CustomizedJobBloc extends BlocBase {
     getMonthAndJobNumCalculation(findMonthToSink(_basicJobNum.value),
         int.tryParse(_basicJobNum.value), 0);
   }
+
+  Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
+
+  Function(String) get sinkShowDiscountBasic => _showDiscountForBasic.sink.add;
+
+  //-------------------Standout-----------------------------------------
 
   void sinkStandoutJobNumber(String jobNum) async {
     var jn = 0;
@@ -74,34 +87,12 @@ class CustomizedJobBloc extends BlocBase {
         int.tryParse(_standoutJobNum.value), 1);
   }
 
-  String findMonthToSink(String jobNum) {
-    int selectedJobNum = int.tryParse(jobNum);
-    if (selectedJobNum < 20) {
-      return '6';
-    } else if (selectedJobNum >= 20 && selectedJobNum < 30) {
-      return '9';
-    } else if (selectedJobNum >= 30) {
-      return '12';
-    }
-    return '0';
-  }
-
-  void sinkSelectedMonthBasic(String month) {
-    _selectedMonthBasic.sink.add(month);
-  }
-
-  void sinkSelectedMonthStandout(String month) {
-    _selectedMonthStandout.sink.add(month);
-  }
-
-  Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
-
-  Function(String) get sinkShowDiscountBasic => _showDiscountForBasic.sink.add;
-
   Function(String) get sinkStandoutJobFee => _standoutJobFee.sink.add;
 
   Function(String) get sinkShowDiscountStandout =>
       _showDiscountForStandout.sink.add;
+
+  //-------------------Common-----------------------------------------
 
   Function(String) get sinkCVNum => _cvNum.sink.add;
 
@@ -113,9 +104,13 @@ class CustomizedJobBloc extends BlocBase {
 
   Function(String) get sinkSubTotalPlusVat => _subTotalPlusVat.sink.add;
 
-//  Function(List<int>) get sinkValidity => _validity.sink.add;
-  //--------------------------------------------------------------------
+  Function(List<int>) get sinkValidity => _validity.sink.add;
 
+  void sinkSelectedMonth(String month) {
+    _selectedMonth.sink.add(month);
+  }
+
+  //-----------------------------Other Functions---------------------------------------
   void incrementBasicJobNum() {
     int jobNum = 0;
     jobNum =
@@ -146,15 +141,6 @@ class CustomizedJobBloc extends BlocBase {
     }
   }
 
-  int totalJobs() {
-    int bjn = 0;
-    int sjn = 0;
-    bjn = int.tryParse(_basicJobNum.value == null ? '5' : _basicJobNum.value);
-    sjn = int.tryParse(
-        _standoutJobNum.value == null ? '5' : _standoutJobNum.value);
-    return bjn + sjn;
-  }
-
   void decrementStandoutJobNum() {
     int jobNum = 0;
     jobNum = int.tryParse(
@@ -162,6 +148,47 @@ class CustomizedJobBloc extends BlocBase {
     if (jobNum > 5) {
       jobNum--;
       sinkStandoutJobNumber(jobNum.toString());
+    }
+  }
+
+  int totalJobs() {
+    int basicJobNum = 0;
+    int standoutJobNum = 0;
+    basicJobNum =
+        int.tryParse(_basicJobNum.value == null ? '5' : _basicJobNum.value);
+    standoutJobNum = int.tryParse(
+        _standoutJobNum.value == null ? '5' : _standoutJobNum.value);
+    return basicJobNum + standoutJobNum;
+  }
+
+  String findMonthToSink(String jobNum) {
+    int selectedJobNum = int.tryParse(jobNum);
+    if (selectedJobNum < 20) {
+      return '6';
+    } else if (selectedJobNum >= 20 && selectedJobNum < 30) {
+      return '9';
+    } else if (selectedJobNum >= 30) {
+      return '12';
+    }
+    return '0';
+  }
+
+  void validityCalculation(int selectedJobNum) async {
+    if (selectedJobNum < 20) {
+      sinkValidity(Constants.sixMonth);
+      sinkSelectedMonth('6');
+    } else if (selectedJobNum == 20) {
+      sinkValidity(Constants.sixNineMonths);
+      sinkSelectedMonth('9');
+    } else if (selectedJobNum > 20 && selectedJobNum < 30) {
+      sinkValidity(Constants.nineMonth);
+      sinkSelectedMonth('9');
+    } else if (selectedJobNum == 30) {
+      sinkValidity(Constants.nineTwelveMonths);
+      sinkSelectedMonth('12');
+    } else if (selectedJobNum > 30) {
+      sinkValidity(Constants.twelveMonth);
+      sinkSelectedMonth('12');
     }
   }
 
@@ -197,6 +224,7 @@ class CustomizedJobBloc extends BlocBase {
     }
 
     totalAmountCalculation();
+    validityCalculation(totalJobs());
   }
 
   void totalAmountCalculation() {
@@ -217,19 +245,6 @@ class CustomizedJobBloc extends BlocBase {
     print('SubTotalPlus VAT $subTotalPlusVat');
   }
 
-  void getCVCalculation(String month, int totalJobNum, int packageIndex) async {
-    var servicePackageModel = await repository.getServicePackageModel();
-    if (totalJobNum == null) {
-      totalJobNum = 0;
-    }
-    var servicePackage = CommonMethods.getServicePackageRate(month, totalJobNum,
-        servicePackageModel.jobListing.bulk[packageIndex].rates);
-    int cvFee = servicePackage.cvFee;
-    int cvNum = servicePackage.cv;
-    print("CV Num $cvNum");
-    print("CV Fee $cvFee");
-  }
-
   @override
   void dispose() {
     _basicJobNum.close();
@@ -245,6 +260,8 @@ class CustomizedJobBloc extends BlocBase {
     _subTotal.close();
     _subTotalPlusVat.close();
     _vatOnSubTotal.close();
+    _validity.close();
+    _selectedMonth.close();
   }
 
   void clearAllData() {
@@ -261,5 +278,7 @@ class CustomizedJobBloc extends BlocBase {
     _subTotal.value = null;
     _subTotalPlusVat.value = null;
     _vatOnSubTotal.value = null;
+    _validity.value = null;
+    _selectedMonth.value = null;
   }
 }

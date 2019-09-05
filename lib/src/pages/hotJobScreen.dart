@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/hotJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
-import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class HotJobSubscription extends StatefulWidget {
   @override
@@ -18,10 +16,8 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
         title: Text(
           'Hot Job',
-          style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Column(
@@ -37,10 +33,10 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                 Column(
                   children: <Widget>[
                     // Switch button
-                    Commons.switchBDTtoDollar(),
+/*                    Commons.switchBDTtoDollar(),
                     SizedBox(
                       height: 20.0,
-                    ),
+                    ),*/
                     Commons.boldRowTitle('Hot Job'),
                     //Selected Job Number
                     Commons.editJobAmount(

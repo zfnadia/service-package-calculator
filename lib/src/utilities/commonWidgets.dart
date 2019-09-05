@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class Commons {
@@ -11,7 +12,7 @@ class Commons {
           padding: EdgeInsets.only(left: 5.0, right: 5.0),
           margin: EdgeInsets.only(right: 15.0),
           decoration: BoxDecoration(
-              border: Border.all(color: Constants.listTileColor),
+              border: Border.all(color: Constants.primaryColor),
               borderRadius: BorderRadius.all(Radius.circular(8.0))),
           child: Row(
             children: <Widget>[
@@ -44,7 +45,7 @@ class Commons {
               width: 100.0,
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                  border: Border.all(color: Constants.listTileColor),
+                  border: Border.all(color: Constants.primaryColor),
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: StreamBuilder(
                   stream: stream,
@@ -59,9 +60,13 @@ class Commons {
                     }
                     return TextField(
                       controller: _controller,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(4),
+                        WhitelistingTextInputFormatter.digitsOnly,
+                      ],
                       textAlign: TextAlign.center,
                       decoration: InputDecoration.collapsed(hintText: ''),
-                      cursorColor: Constants.listTileColor,
+                      cursorColor: Constants.primaryColor,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
                         changeFunction(value);
@@ -112,17 +117,36 @@ class Commons {
           child: Container(
             height: 80.0,
             width: double.infinity,
-            color: Constants.listTileColor,
+            color: Constants.primaryColor,
             child: Container(
-              margin: EdgeInsets.only(right: 20.0),
+              margin: EdgeInsets.only(right: 20.0, top: 25.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text('Amount to pay:   $amount BDT',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold)),
+                  Row(
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text('Amount to pay:   ',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('$amount BDT',
+                              style: TextStyle(
+                                  fontSize: 21.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -220,11 +244,14 @@ class Commons {
                               child: RaisedButton(
                                 child: Text(
                                   '${validMonthList[index]}',
-                                  style: TextStyle(fontSize: 14.0, color: snapshot.data is String &&
-                                      snapshot.data ==
-                                          validMonthList[index].toString()
-                                      ? Colors.white
-                                      : Colors.black54),
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: snapshot.data is String &&
+                                              snapshot.data ==
+                                                  validMonthList[index]
+                                                      .toString()
+                                          ? Colors.white
+                                          : Colors.black54),
                                 ),
                                 splashColor: Colors.grey,
                                 shape: CircleBorder(),
@@ -244,7 +271,6 @@ class Commons {
                                 },
                               ),
                             );
-                            ;
                           });
                     }),
               )

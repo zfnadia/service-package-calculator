@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/basicAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
-import 'package:service_package_calculator/src/routes/routes.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
 
 class BasicAndCVBankSub extends StatefulWidget {
   @override
@@ -18,10 +16,8 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.listTileColor,
         title: Text(
           'Bulk Subscription: \nBasic Job and CV Bank',
-          style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Column(
@@ -36,10 +32,10 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
               ),
               Column(
                 children: <Widget>[
-                  Commons.switchBDTtoDollar(),
+/*                  Commons.switchBDTtoDollar(),
                   SizedBox(
                     height: 20.0,
-                  ),
+                  ),*/
                   Commons.editJobAmount(
                       'Basic Jobs',
                       basicAndCVBankBloc.getBasicJobNum,

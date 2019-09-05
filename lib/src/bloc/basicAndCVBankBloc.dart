@@ -48,19 +48,19 @@ class BasicAndCVBankBloc extends BlocBase {
     //calculationLogic(selectedJobNum, _selectedMonth.value);
     int selectedJobNum = int.tryParse(_basicJobNum.value);
     if (selectedJobNum < 20) {
-      sinkValidity(Constants.sixMonths);
+      sinkValidity(Constants.sixMonth);
       sinkSelectedMonth('6');
     } else if (selectedJobNum == 20) {
       sinkValidity(Constants.sixNineMonths);
       sinkSelectedMonth('9');
     } else if (selectedJobNum > 20 && selectedJobNum < 30) {
-      sinkValidity(Constants.nineMonths);
+      sinkValidity(Constants.nineMonth);
       sinkSelectedMonth('9');
     } else if (selectedJobNum == 30) {
       sinkValidity(Constants.nineTwelveMonths);
       sinkSelectedMonth('12');
     } else if (selectedJobNum > 30) {
-      sinkValidity(Constants.twelveMonths);
+      sinkValidity(Constants.twelveMonth);
       sinkSelectedMonth('12');
     }
   }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
-import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/pages/basicAndCVBankScreen.dart';
 import 'package:service_package_calculator/src/pages/basicJobScreen.dart';
 import 'package:service_package_calculator/src/pages/customizedSubScreen.dart';
@@ -75,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.only(left: 10.0, right: 10.0),
                     child: Card(
-                      color: Constants.listTileColor,
+                      color: Constants.primaryColor,
                       elevation: 3.0,
                       child: ListTile(
                         title: Text(
