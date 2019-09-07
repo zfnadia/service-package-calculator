@@ -97,8 +97,17 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                         return StreamBuilder(
                             stream: customizedJobBloc.getCVFee,
                             builder: (context, cvFeeSnapshot) {
-//                              return Commons.cvCount('${cvNumSnapshot.data}',
-//                                  '${cvFeeSnapshot.data}');
+                              return StreamBuilder(
+                                  stream: customizedJobBloc.getCvStatus,
+                                  builder: (context, cvStatusSnapshot) {
+                                    print('CV STATUS ${cvStatusSnapshot.data}');
+                                    return Commons.cvCount(
+                                        '${cvNumSnapshot.data}',
+                                        '${cvFeeSnapshot.data}',
+                                        cvStatusSnapshot.data,
+                                        customizedJobBloc.sinkCVStatus,
+                                        1);
+                                  });
                             });
                       }),
                   SizedBox(
@@ -161,11 +170,11 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     customizedJobBloc = BlocProvider.of(context);
-    customizedJobBloc.sinkBasicJobNumber('0');
-    customizedJobBloc.sinkStandoutJobNumber('0');
+    customizedJobBloc.sinkBasicJobNumber('0', 0);
+    customizedJobBloc.sinkStandoutJobNumber('0', 0);
 
-    customizedJobBloc.sinkBasicJobFee('0.0');
-    customizedJobBloc.sinkStandoutJobFee('0.0');
+    customizedJobBloc.sinkBasicJobFee('0');
+    customizedJobBloc.sinkStandoutJobFee('0');
     customizedJobBloc.sinkShowDiscountBasic('0');
     customizedJobBloc.sinkShowDiscountStandout('0');
     customizedJobBloc.sinkCVNum('0');
@@ -173,5 +182,6 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
     customizedJobBloc.sinkSubTotal('0.0');
     customizedJobBloc.sinkVatOnSubTotal('0.0');
     customizedJobBloc.sinkSubTotalPlusVat('0.0');
+    customizedJobBloc.sinkCVStatus(false, 1);
   }
 }

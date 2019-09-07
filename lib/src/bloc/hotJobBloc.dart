@@ -46,7 +46,7 @@ class HotJobBloc extends BlocBase {
 
   //-----------------------Function---------------------------------------------
 
-  void sinkBasicJobNumber(String jobNum) async {
+  void sinkBasicJobNumber(String jobNum, int index) async {
     _basicJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_basicJobNum.value);
     if (selectedJobNum == 0 || selectedJobNum == null) {
@@ -73,7 +73,7 @@ class HotJobBloc extends BlocBase {
     }
   }
 
-  void sinkPremiumJobNumber(String jobNum) {
+  void sinkPremiumJobNumber(String jobNum, int index) {
     _premiumJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_premiumJobNum.value);
     if (selectedJobNum == 0 || selectedJobNum == null) {
@@ -117,39 +117,39 @@ class HotJobBloc extends BlocBase {
 
   //--------------------------------------------------------------------
 
-  void incrementBasicJobNum() {
+  void incrementBasicJobNum(int index) {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum = int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 
-  void incrementPremiumJobNum() {
+  void incrementPremiumJobNum(int index) {
     int jobNum = 0;
-    jobNum = int.tryParse(_premiumJobNum.value);
+    jobNum = int.tryParse(_premiumJobNum.value == null || _premiumJobNum.value.isEmpty ? '0' : _premiumJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkPremiumJobNumber(jobNum.toString());
+      sinkPremiumJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementBasicJobNum() {
+  void decrementBasicJobNum(int index) {
     int jobNum = 0;
-    jobNum = int.tryParse(_basicJobNum.value);
+    jobNum = int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementPremiumJobNum() {
+  void decrementPremiumJobNum(int index) {
     int jobNum = 0;
-    jobNum = int.tryParse(_premiumJobNum.value);
+    jobNum = int.tryParse(_premiumJobNum.value == null || _premiumJobNum.value.isEmpty ? '0' : _premiumJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkPremiumJobNumber(jobNum.toString());
+      sinkPremiumJobNumber(jobNum.toString(), index);
     }
   }
 

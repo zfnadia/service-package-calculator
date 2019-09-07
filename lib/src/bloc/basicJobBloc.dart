@@ -28,28 +28,28 @@ class BasicJobBloc extends BlocBase {
 
   Function(String) get sinkTotalAmount => _totalAmount.sink.add;
 
-  void sinkBasicJobNumber(String jobNum) {
+  void sinkBasicJobNumber(String jobNum, int index) {
     _basicJobNum.sink.add(jobNum);
     getBasicJobAmount();
   }
 
-  void incrementJobNum() {
+  void incrementJobNum(int index) {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementJobNum() {
+  void decrementJobNum(int index) {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 

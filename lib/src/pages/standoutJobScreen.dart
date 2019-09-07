@@ -142,7 +142,7 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     standoutJobBloc = BlocProvider.of(context);
-    standoutJobBloc.sinkBasicJobNumber('0');
-    standoutJobBloc.sinkPremiumJobNumber('0');
+    standoutJobBloc.sinkBasicJobNumber('0', 0);
+    standoutJobBloc.sinkPremiumJobNumber('0', 0);
   }
 }

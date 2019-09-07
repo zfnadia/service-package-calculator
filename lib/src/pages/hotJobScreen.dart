@@ -157,7 +157,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     hotJobBloc = BlocProvider.of(context);
-    hotJobBloc.sinkBasicJobNumber('0');
-    hotJobBloc.sinkPremiumJobNumber('0');
+    hotJobBloc.sinkBasicJobNumber('0', 0);
+    hotJobBloc.sinkPremiumJobNumber('0', 0);
   }
 }

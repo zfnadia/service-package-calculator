@@ -27,6 +27,7 @@ class CustomizedJobBloc extends BlocBase {
   final _subTotalPlusVat = BehaviorSubject<String>();
   final _validity = BehaviorSubject<List<int>>();
   final _selectedMonth = BehaviorSubject<String>();
+  final _cvStatus = BehaviorSubject<bool>();
 
   //-----------------------Stream-----------------------------------------------
   Stream<String> get getBasicJobNum => _basicJobNum.stream;
@@ -61,15 +62,12 @@ class CustomizedJobBloc extends BlocBase {
 
   Stream<String> get getSelectedMonth => _selectedMonth.stream;
 
+  Stream<bool> get getCvStatus => _cvStatus.stream;
+
   //-----------------------Function---------------------------------------------
   //-----------------------Basic-----------------------------------------
-  void sinkBasicJobNumber(String jobNum) async {
-//    var jobNumber = 0;
-//    jobNumber = int.tryParse(jobNum == null || jobNum.isEmpty ? '0' : jobNum);
-
+  void sinkBasicJobNumber(String jobNum, int index) async {
     _basicJobNum.sink.add(jobNum.toString());
-    print('LLLLLLLLLLLLLLLLLLBBB ${_basicJobNum.value}');
-
     getMonthAndJobNumCalculation(findMonthToSink(_basicJobNum.value),
         int.tryParse(_basicJobNum.value), 0);
   }
@@ -80,13 +78,18 @@ class CustomizedJobBloc extends BlocBase {
 
   //-------------------Standout-----------------------------------------
 
-  void sinkStandoutJobNumber(String jobNum) async {
+  void sinkStandoutJobNumber(String jobNum, int index) async {
     var jn = 0;
     jn = int.tryParse(jobNum == null || jobNum.isEmpty ? '0' : jobNum);
 
     _standoutJobNum.sink.add(jn.toString());
     getMonthAndJobNumCalculation(findMonthToSink(_standoutJobNum.value),
         int.tryParse(_standoutJobNum.value), 1);
+  }
+
+  void sinkCVStatus(bool status, int index) {
+    _cvStatus.sink.add(status);
+    totalAmountCalculation();
   }
 
   Function(String) get sinkStandoutJobFee => _standoutJobFee.sink.add;
@@ -108,48 +111,48 @@ class CustomizedJobBloc extends BlocBase {
 
   Function(List<int>) get sinkValidity => _validity.sink.add;
 
-  void sinkSelectedMonth(String month) {
+  void sinkSelectedMonth(String month, int index) {
     _selectedMonth.sink.add(month);
   }
 
   //-----------------------------Other Functions---------------------------------------
-  void incrementBasicJobNum() {
+  void incrementBasicJobNum(int index) {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementBasicJobNum() {
+  void decrementBasicJobNum(int index) {
     int jobNum = 0;
     jobNum =
-        int.tryParse(_basicJobNum.value == null ? '0' : _basicJobNum.value);
+        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkBasicJobNumber(jobNum.toString(), index);
     }
   }
 
-  void incrementStandoutJobNum() {
+  void incrementStandoutJobNum(int index) {
     int jobNum = 0;
     jobNum = int.tryParse(
-        _standoutJobNum.value == null ? '0' : _standoutJobNum.value);
+        _standoutJobNum.value == null || _standoutJobNum.value.isEmpty ? '0' : _standoutJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkStandoutJobNumber(jobNum.toString());
+      sinkStandoutJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementStandoutJobNum() {
+  void decrementStandoutJobNum(int index) {
     int jobNum = 0;
     jobNum = int.tryParse(
-        _standoutJobNum.value == null ? '0' : _standoutJobNum.value);
+        _standoutJobNum.value == null || _standoutJobNum.value.isEmpty ? '0' : _standoutJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkStandoutJobNumber(jobNum.toString());
+      sinkStandoutJobNumber(jobNum.toString(), index);
     }
   }
 
@@ -180,27 +183,28 @@ class CustomizedJobBloc extends BlocBase {
   }
 
   void validityCalculation(int selectedJobNum) async {
+    int index = 0;
     if (selectedJobNum == null) {
       sinkValidity(Constants.empty);
-      sinkSelectedMonth('0');
+      sinkSelectedMonth('0', index);
     } else if (selectedJobNum >= 0 && selectedJobNum < 5) {
       sinkValidity(Constants.empty);
-      sinkSelectedMonth('0');
+      sinkSelectedMonth('0', index);
     } else if (selectedJobNum < 20) {
       sinkValidity(Constants.sixMonth);
-      sinkSelectedMonth('6');
+      sinkSelectedMonth('6', index);
     } else if (selectedJobNum == 20) {
       sinkValidity(Constants.sixNineMonths);
-      sinkSelectedMonth('9');
+      sinkSelectedMonth('9', index);
     } else if (selectedJobNum > 20 && selectedJobNum < 30) {
       sinkValidity(Constants.nineMonth);
-      sinkSelectedMonth('9');
+      sinkSelectedMonth('9', index);
     } else if (selectedJobNum == 30) {
       sinkValidity(Constants.nineTwelveMonths);
-      sinkSelectedMonth('12');
+      sinkSelectedMonth('12', index);
     } else if (selectedJobNum > 30) {
       sinkValidity(Constants.twelveMonth);
-      sinkSelectedMonth('12');
+      sinkSelectedMonth('12', index);
     }
   }
 
@@ -246,7 +250,7 @@ class CustomizedJobBloc extends BlocBase {
     basicJobFee = int.tryParse(_basicJobFee.value);
     standOutJobFee = int.tryParse(_standoutJobFee.value);
     cvFee = int.tryParse(_cvFee.value);
-    int subTotal = basicJobFee + standOutJobFee + cvFee;
+    int subTotal = basicJobFee + standOutJobFee + (_cvStatus.value == false ? 0 : cvFee);
     double vatOnSubTotal = subTotal * 0.05;
     double subTotalPlusVat = subTotal + vatOnSubTotal;
     sinkSubTotal(Constants.oCcy.format(subTotal).toString());
@@ -274,6 +278,7 @@ class CustomizedJobBloc extends BlocBase {
     _vatOnSubTotal.close();
     _validity.close();
     _selectedMonth.close();
+    _cvStatus.close();
   }
 
   void clearAllData() {
@@ -292,5 +297,6 @@ class CustomizedJobBloc extends BlocBase {
     _vatOnSubTotal.value = null;
     _validity.value = null;
     _selectedMonth.value = null;
+    _cvStatus.value = null;
   }
 }

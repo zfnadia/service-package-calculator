@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
+import 'package:service_package_calculator/src/utilities/customCheckbox.dart';
 
 class Commons {
   static Widget switchBDTtoDollar() {
@@ -16,7 +17,7 @@ class Commons {
               borderRadius: BorderRadius.all(Radius.circular(8.0))),
           child: Row(
             children: <Widget>[
-              Text('BDT'), //value == false ? 'BDT' : 'USD'
+              Text('BDT'),
               Switch(value: false, onChanged: null)
             ],
           ),
@@ -26,7 +27,8 @@ class Commons {
   }
 
   static Widget editJobAmount(String title, Stream stream,
-      Function changeFunction, Function inc, Function dec, String init) {
+      Function changeFunction, Function inc, Function dec, String init,
+      {int index}) {
     final _controller = TextEditingController();
     return Row(
       children: <Widget>[
@@ -38,7 +40,7 @@ class Commons {
             IconButton(
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
-                  dec();
+                  dec(index);
                 }),
             Container(
               height: 40.0,
@@ -69,7 +71,7 @@ class Commons {
                         cursorColor: Constants.primaryColor,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          changeFunction(value);
+                          changeFunction(value, index);
                           _controller.selection =
                               TextSelection.collapsed(offset: value.length);
                         },
@@ -80,7 +82,7 @@ class Commons {
             IconButton(
                 icon: new Icon(Icons.add_circle_outline),
                 onPressed: () {
-                  inc();
+                  inc(index);
                 }),
           ],
         )
@@ -186,7 +188,8 @@ class Commons {
     );
   }
 
-  static Widget cvCount(String cvNum, String cvPrice, bool cvStatus, Function changeFunc) {
+  static Widget cvCount(String cvNum, String cvPrice, bool cvStatus,
+      Function changeFunc, int index) {
     bool isChecked = cvStatus;
     return Container(
       margin: EdgeInsets.only(right: 15.0),
@@ -194,14 +197,17 @@ class Commons {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Checkbox(
-//                checkColor: Colors.green,
-//                activeColor: Colors.blue,
-                value: isChecked,
-                onChanged: (value) {
-                  isChecked = value;
-                  changeFunc(isChecked);
-                },
+              Container(
+                margin: EdgeInsets.only(right: 10.0),
+                child: CustomCheckbox(
+                  value: isChecked,
+                  useTapTarget: false,
+                  activeColor: Colors.green,
+                  onChanged: (value) {
+                    isChecked = value;
+                    changeFunc(isChecked, index);
+                  },
+                ),
               ),
               Text('CVs: $cvNum',
                   style: TextStyle(fontSize: 20.0, color: Colors.black87))
@@ -216,11 +222,10 @@ class Commons {
   }
 
 //snapshot, getSelectedMonth, sinkSelectedMonth
-  static Widget validitySelection(
-      snapshot, Stream stream, Function changeFunc) {
+  static Widget validitySelection(snapshot, Stream stream, Function changeFunc,
+      {int index}) {
     if (snapshot.hasData && snapshot.data != null) {
       List<int> validMonthList = snapshot.data.toList();
-      print('KKKKKKKKK $validMonthList');
       return Row(
         children: <Widget>[
           Text('Validity (Month)',
@@ -271,10 +276,10 @@ class Commons {
                                 onPressed: () {
                                   if (snapshot.data is String &&
                                       snapshot.data == validMonthList[index]) {
-                                    changeFunc('');
+                                    changeFunc('', index);
                                   } else {
-                                    changeFunc(
-                                        validMonthList[index].toString());
+                                    changeFunc(validMonthList[index].toString(),
+                                        index);
                                   }
                                 },
                               ),

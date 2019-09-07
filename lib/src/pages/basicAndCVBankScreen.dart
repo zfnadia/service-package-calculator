@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:service_package_calculator/src/bloc/basicAndCVBankBloc.dart';
+import 'package:service_package_calculator/src/bloc/selectedJobAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 
@@ -9,7 +9,7 @@ class BasicAndCVBankSub extends StatefulWidget {
 }
 
 class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
-  BasicAndCVBankBloc basicAndCVBankBloc;
+  SelectedJobAndCVBankBloc selectedAndCVBankBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +37,17 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                   ),*/
                   Commons.editJobAmount(
                       'Basic Jobs',
-                      basicAndCVBankBloc.getBasicJobNum,
-                      basicAndCVBankBloc.sinkBasicJobNumber,
-                      basicAndCVBankBloc.incrementBasicJobNum,
-                      basicAndCVBankBloc.decrementBasicJobNum,
-                      '0'),
+                      selectedAndCVBankBloc.getSelectedJobNum,
+                      selectedAndCVBankBloc.sinkSelectedJobNumber,
+                      selectedAndCVBankBloc.incrementSelectedJobNum,
+                      selectedAndCVBankBloc.decrementSelectedJobNum,
+                      '0', index: 0),
                   SizedBox(
                     height: 30.0,
                   ),
                   //Amount row
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.getBasicJobFee,
+                      stream: selectedAndCVBankBloc.getSelectedJobFee,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'Amount',
@@ -56,7 +56,7 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                                 : '0.0');
                       }),
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.showDiscountForBasic,
+                      stream: selectedAndCVBankBloc.showDiscountForBasic,
                       builder: (context, snapshot) {
                         return Commons.showDiscount('${snapshot.data}%');
                       }),
@@ -64,18 +64,18 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.cvNum,
+                      stream: selectedAndCVBankBloc.cvNum,
                       builder: (context, cvNumSnapshot) {
                         return StreamBuilder(
-                            stream: basicAndCVBankBloc.cvFee,
+                            stream: selectedAndCVBankBloc.cvFee,
                             builder: (context, cvFeeSnapshot) {
                               return StreamBuilder(
-                                stream: basicAndCVBankBloc.getcvStatus,
+                                stream: selectedAndCVBankBloc.getCvStatus,
                                 builder: (context, cvStatusSnapshot) {
                                   print('CV STATUS ${cvStatusSnapshot.data}');
                                   return Commons.cvCount('${cvNumSnapshot.data}',
                                       '${cvFeeSnapshot.data}', cvStatusSnapshot.data,
-                                  basicAndCVBankBloc.sinkCVStatus);
+                                  selectedAndCVBankBloc.sinkCVStatus, 0);
                                 }
                               );
                             });
@@ -84,12 +84,12 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                     height: 20.0,
                   ),
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.getValidity,
+                      stream: selectedAndCVBankBloc.getValidity,
                       builder: (context, snapshot) {
                         return Commons.validitySelection(
                             snapshot,
-                            basicAndCVBankBloc.getSelectedMonth,
-                            basicAndCVBankBloc.sinkSelectedMonth);
+                            selectedAndCVBankBloc.getSelectedMonth,
+                            selectedAndCVBankBloc.sinkSelectedMonth, index: 0);
                       }),
                   SizedBox(
                     height: 30.0,
@@ -101,7 +101,7 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.getSubTotal,
+                      stream: selectedAndCVBankBloc.getSubTotal,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'Sub Total',
@@ -113,7 +113,7 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: basicAndCVBankBloc.getVat,
+                      stream: selectedAndCVBankBloc.getVat,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'VAT (5%)',
@@ -129,7 +129,7 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
             ],
           )),
           StreamBuilder(
-              stream: basicAndCVBankBloc.getSubTotalPlusVat,
+              stream: selectedAndCVBankBloc.getSubTotalPlusVat,
               builder: (context, snapshot) {
                 return Commons.totalAmountBottom(
                     snapshot.hasData && snapshot.data != null
@@ -143,15 +143,15 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
 
   @override
   void dispose() {
-    basicAndCVBankBloc.clearAllData();
+    selectedAndCVBankBloc.clearAllData();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    basicAndCVBankBloc = BlocProvider.of(context);
-    basicAndCVBankBloc.sinkBasicJobNumber('0');
-    basicAndCVBankBloc.sinkCVStatus(false);
+    selectedAndCVBankBloc = BlocProvider.of(context);
+    selectedAndCVBankBloc.sinkSelectedJobNumber('0', 0);
+    selectedAndCVBankBloc.sinkCVStatus(false, 0);
   }
 }

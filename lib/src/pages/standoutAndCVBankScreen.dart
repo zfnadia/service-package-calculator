@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:service_package_calculator/src/bloc/selectedJobAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
-import 'package:service_package_calculator/src/bloc/standoutAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/utilities/commonWidgets.dart';
 
 class StandoutAndCVBankSub extends StatefulWidget {
@@ -9,8 +9,7 @@ class StandoutAndCVBankSub extends StatefulWidget {
 }
 
 class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
-  StandoutAndCVBankBloc standoutAndCVBankBloc;
-
+  SelectedJobAndCVBankBloc selectedAndCVBankBloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,17 +36,18 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                   ),*/
                   Commons.editJobAmount(
                       'Standout Jobs',
-                      standoutAndCVBankBloc.getStandoutJobNum,
-                      standoutAndCVBankBloc.sinkStandoutJobNumber,
-                      standoutAndCVBankBloc.incrementStandoutJobNum,
-                      standoutAndCVBankBloc.decrementStandoutJobNum,
-                      '0'),
+                      selectedAndCVBankBloc.getSelectedJobNum,
+                      selectedAndCVBankBloc.sinkSelectedJobNumber,
+                      selectedAndCVBankBloc.incrementSelectedJobNum,
+                      selectedAndCVBankBloc.decrementSelectedJobNum,
+                      '0',
+                      index: 1),
                   SizedBox(
                     height: 30.0,
                   ),
                   //Amount row
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.getStandoutJobFee,
+                      stream: selectedAndCVBankBloc.getSelectedJobFee,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'Amount',
@@ -56,7 +56,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                                 : '0.0');
                       }),
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.showDiscountForStandout,
+                      stream: selectedAndCVBankBloc.showDiscountForBasic,
                       builder: (context, snapshot) {
                         return Commons.showDiscount('${snapshot.data}%');
                       }),
@@ -64,25 +64,35 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.cvNum,
+                      stream: selectedAndCVBankBloc.cvNum,
                       builder: (context, cvNumSnapshot) {
                         return StreamBuilder(
-                            stream: standoutAndCVBankBloc.cvFee,
+                            stream: selectedAndCVBankBloc.cvFee,
                             builder: (context, cvFeeSnapshot) {
-//                              return Commons.cvCount('${cvNumSnapshot.data}',
-//                                  '${cvFeeSnapshot.data}');
+                              return StreamBuilder(
+                                  stream: selectedAndCVBankBloc.getCvStatus,
+                                  builder: (context, cvStatusSnapshot) {
+                                    print('CV STATUS ${cvStatusSnapshot.data}');
+                                    return Commons.cvCount(
+                                        '${cvNumSnapshot.data}',
+                                        '${cvFeeSnapshot.data}',
+                                        cvStatusSnapshot.data,
+                                        selectedAndCVBankBloc.sinkCVStatus,
+                                        1);
+                                  });
                             });
                       }),
                   SizedBox(
                     height: 20.0,
                   ),
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.getValidity,
+                      stream: selectedAndCVBankBloc.getValidity,
                       builder: (context, snapshot) {
                         return Commons.validitySelection(
                             snapshot,
-                            standoutAndCVBankBloc.getSelectedMonth,
-                            standoutAndCVBankBloc.sinkSelectedMonth);
+                            selectedAndCVBankBloc.getSelectedMonth,
+                            selectedAndCVBankBloc.sinkSelectedMonth,
+                            index: 1);
                       }),
                   SizedBox(
                     height: 30.0,
@@ -94,7 +104,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.getSubTotal,
+                      stream: selectedAndCVBankBloc.getSubTotal,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'Sub Total',
@@ -106,7 +116,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                     height: 30.0,
                   ),
                   StreamBuilder(
-                      stream: standoutAndCVBankBloc.getVat,
+                      stream: selectedAndCVBankBloc.getVat,
                       builder: (context, snapshot) {
                         return Commons.showAmount(
                             'VAT (5%)',
@@ -122,7 +132,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
             ],
           )),
           StreamBuilder(
-              stream: standoutAndCVBankBloc.getSubTotalPlusVat,
+              stream: selectedAndCVBankBloc.getSubTotalPlusVat,
               builder: (context, snapshot) {
                 return Commons.totalAmountBottom(
                     snapshot.hasData && snapshot.data != null
@@ -136,14 +146,15 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
 
   @override
   void dispose() {
-    standoutAndCVBankBloc.clearAllData();
+    selectedAndCVBankBloc.clearAllData();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    standoutAndCVBankBloc = BlocProvider.of(context);
-    standoutAndCVBankBloc.sinkStandoutJobNumber('0');
+    selectedAndCVBankBloc = BlocProvider.of(context);
+    selectedAndCVBankBloc.sinkSelectedJobNumber('0', 1);
+    selectedAndCVBankBloc.sinkCVStatus(false, 1);
   }
 }

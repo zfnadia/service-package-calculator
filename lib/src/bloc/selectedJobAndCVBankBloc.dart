@@ -4,11 +4,11 @@ import 'package:service_package_calculator/src/repository.dart';
 import 'package:service_package_calculator/src/utilities/commonMethods.dart';
 import 'package:service_package_calculator/src/utilities/constants.dart';
 
-class BasicAndCVBankBloc extends BlocBase {
+class SelectedJobAndCVBankBloc extends BlocBase {
   //-------------------BehaviorSubjects-----------------------------------------
 
-  final _basicJobNum = BehaviorSubject<String>();
-  final _basicJobFee = BehaviorSubject<String>();
+  final _selectedJobNum = BehaviorSubject<String>();
+  final _selectedJobFee = BehaviorSubject<String>();
   final _vat = BehaviorSubject<String>();
   final _subTotal = BehaviorSubject<String>();
   final _subTotalPlusVat = BehaviorSubject<String>();
@@ -21,9 +21,9 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //-----------------------Stream-----------------------------------------------
 
-  Stream<String> get getBasicJobNum => _basicJobNum.stream;
+  Stream<String> get getSelectedJobNum => _selectedJobNum.stream;
 
-  Stream<String> get getBasicJobFee => _basicJobFee.stream;
+  Stream<String> get getSelectedJobFee => _selectedJobFee.stream;
 
   Stream<String> get getVat => _vat.stream;
 
@@ -41,45 +41,50 @@ class BasicAndCVBankBloc extends BlocBase {
 
   Stream<String> get getSelectedMonth => _selectedMonth.stream;
 
-  Stream<bool> get getcvStatus => _cvStatus.stream;
+  Stream<bool> get getCvStatus => _cvStatus.stream;
 
   //-----------------------Function---------------------------------------------
 
-  void sinkBasicJobNumber(String jobNum) async {
-    _basicJobNum.sink.add(jobNum);
-
-    int selectedJobNum = int.tryParse(_basicJobNum.value);
+  void sinkSelectedJobNumber(String jobNum, int index) async {
+    _selectedJobNum.sink.add(jobNum);
+    int selectedJobNum = int.tryParse(_selectedJobNum.value);
     if (selectedJobNum == null) {
       sinkValidity(Constants.empty);
-      sinkSelectedMonth('0');
+      sinkSelectedMonth('0', index);
     } else if (selectedJobNum >= 0 && selectedJobNum < 5) {
       sinkValidity(Constants.empty);
-      sinkSelectedMonth('0');
+      sinkSelectedMonth('0', index);
     } else if (selectedJobNum < 20) {
       sinkValidity(Constants.sixMonth);
-      sinkSelectedMonth('6');
+      sinkSelectedMonth('6', index);
     } else if (selectedJobNum == 20) {
       sinkValidity(Constants.sixNineMonths);
-      sinkSelectedMonth('9');
+      sinkSelectedMonth('9', index);
     } else if (selectedJobNum > 20 && selectedJobNum < 30) {
       sinkValidity(Constants.nineMonth);
-      sinkSelectedMonth('9');
+      sinkSelectedMonth('9', index);
     } else if (selectedJobNum == 30) {
       sinkValidity(Constants.nineTwelveMonths);
-      sinkSelectedMonth('12');
+      sinkSelectedMonth('12', index);
     } else if (selectedJobNum > 30) {
       sinkValidity(Constants.twelveMonth);
-      sinkSelectedMonth('12');
+      sinkSelectedMonth('12', index);
     }
   }
 
-  void sinkSelectedMonth(String month) {
+  void sinkSelectedMonth(String month, int index) {
     _selectedMonth.sink.add(month);
-    int selectedJobNum = int.tryParse(_basicJobNum.value);
-    getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum);
+    int selectedJobNum = int.tryParse(_selectedJobNum.value);
+    getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum, index);
   }
 
-  Function(String) get sinkBasicJobFee => _basicJobFee.sink.add;
+  void sinkCVStatus(bool status, int index) {
+    _cvStatus.sink.add(status);
+    int selectedJobNum = int.tryParse(_selectedJobNum.value);
+    getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum, index);
+  }
+
+  Function(String) get sinkSelectedJobFee => _selectedJobFee.sink.add;
 
   Function(String) get sinkVat => _vat.sink.add;
 
@@ -97,40 +102,40 @@ class BasicAndCVBankBloc extends BlocBase {
 
   //--------------------------------------------------------------------
 
-  void sinkCVStatus (bool status) {
-    _cvStatus.sink.add(status);
-    int selectedJobNum = int.tryParse(_basicJobNum.value);
-    getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum);
-  }
-  void incrementBasicJobNum() {
+  void incrementSelectedJobNum(int index) {
     int jobNum = 0;
-    jobNum =
-        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
+    jobNum = int.tryParse(
+        _selectedJobNum.value == null || _selectedJobNum.value.isEmpty
+            ? '0'
+            : _selectedJobNum.value);
     if (jobNum >= 0) {
       jobNum++;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkSelectedJobNumber(jobNum.toString(), index);
     }
   }
 
-  void decrementBasicJobNum() {
+  void decrementSelectedJobNum(int index) {
     int jobNum = 0;
-    jobNum =
-        int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
+    jobNum = int.tryParse(
+        _selectedJobNum.value == null || _selectedJobNum.value.isEmpty
+            ? '0'
+            : _selectedJobNum.value);
     if (jobNum > 0) {
       jobNum--;
-      sinkBasicJobNumber(jobNum.toString());
+      sinkSelectedJobNumber(jobNum.toString(), index);
     }
   }
 
-  void getMonthAndJobNumCalculation(String month, int selectedJobNum) async {
+  void getMonthAndJobNumCalculation(
+      String month, int selectedJobNum, int index) async {
     var servicePackageModel = await repository.getServicePackageModel();
 
     if (selectedJobNum == null) {
       selectedJobNum = 0;
     }
 
-    var servicePackage = CommonMethods.getServicePackageRate(
-        month, selectedJobNum, servicePackageModel.jobListing.bulk[0].rates);
+    var servicePackage = CommonMethods.getServicePackageRate(month,
+        selectedJobNum, servicePackageModel.jobListing.bulk[index].rates);
 
     print('GOT VALUE Final = ${servicePackage.rate}');
 
@@ -144,7 +149,7 @@ class BasicAndCVBankBloc extends BlocBase {
     print('KKKKKKKKKK $subTotal');
     double subTotalVat = subTotal * (vat / 100);
     double subTotalPlusVat = subTotal + subTotalVat;
-    sinkBasicJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
+    sinkSelectedJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
     sinkShowDiscountBasic(Constants.oCcy1.format(discount).toString());
     sinkCVNum(Constants.oCcy1.format(cvNum).toString());
     sinkCVFee(Constants.oCcy.format(cvFee).toString());
@@ -164,8 +169,8 @@ class BasicAndCVBankBloc extends BlocBase {
 
   @override
   void dispose() {
-    _basicJobNum.close();
-    _basicJobFee.close();
+    _selectedJobNum.close();
+    _selectedJobFee.close();
     _subTotal.close();
     _subTotalPlusVat.close();
     _vat.close();
@@ -174,11 +179,12 @@ class BasicAndCVBankBloc extends BlocBase {
     _cvFee.close();
     _validity.close();
     _selectedMonth.close();
+    _cvStatus.close();
   }
 
   void clearAllData() {
-    _basicJobNum.value = null;
-    _basicJobFee.value = null;
+    _selectedJobNum.value = null;
+    _selectedJobFee.value = null;
     _subTotal.value = null;
     _subTotalPlusVat.value = null;
     _vat.value = null;
@@ -187,5 +193,6 @@ class BasicAndCVBankBloc extends BlocBase {
     _cvFee.value = null;
     _validity.value = null;
     _selectedMonth.value = '0';
+    _cvStatus.value = null;
   }
 }
