@@ -248,8 +248,8 @@ class Commons {
                               snapshot.data == null ? 0 : validMonthList.length,
                           itemBuilder: (context, index) {
                             return Container(
-                              width: 50.0,
-                              height: 50.0,
+                              width: 55.0,
+                              height: 55.0,
                               decoration: new BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
@@ -258,7 +258,7 @@ class Commons {
                                 child: Text(
                                   '${validMonthList[index]}',
                                   style: TextStyle(
-                                      fontSize: 14.0,
+                                      fontSize: 13.0,
                                       color: snapshot.data is String &&
                                               snapshot.data ==
                                                   validMonthList[index]
