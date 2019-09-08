@@ -6,7 +6,7 @@ import 'package:service_package_calculator/src/bloc/hotJobBloc.dart';
 import 'package:service_package_calculator/src/bloc/provider/blocProvider.dart';
 import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
 import 'package:service_package_calculator/src/pages/homeScreen.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
+import 'package:service_package_calculator/src/utilities/colors.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
                           bloc: CustomizedJobBloc(),
                           child: MaterialApp(
                               home: HomeScreen(),
-                            theme: ThemeData(primaryColor: Constants.primaryColor),
+                            theme: ThemeData(primaryColor: ColorsPackage.primaryColor),
                           )
                       )
                   )

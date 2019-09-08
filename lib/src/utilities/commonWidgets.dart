@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:service_package_calculator/src/utilities/constants.dart';
+import 'package:service_package_calculator/src/utilities/colors.dart';
 import 'package:service_package_calculator/src/utilities/customCheckbox.dart';
 
 class Commons {
@@ -13,7 +13,7 @@ class Commons {
           padding: EdgeInsets.only(left: 5.0, right: 5.0),
           margin: EdgeInsets.only(right: 15.0),
           decoration: BoxDecoration(
-              border: Border.all(color: Constants.primaryColor),
+              border: Border.all(color: ColorsPackage.primaryColor),
               borderRadius: BorderRadius.all(Radius.circular(8.0))),
           child: Row(
             children: <Widget>[
@@ -38,6 +38,7 @@ class Commons {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
+                key: Key('decrement'),
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
                   dec(index);
@@ -46,7 +47,7 @@ class Commons {
               height: 40.0,
               width: 100.0,
               decoration: BoxDecoration(
-                  border: Border.all(color: Constants.primaryColor),
+                  border: Border.all(color: ColorsPackage.primaryColor),
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               child: StreamBuilder(
                   stream: stream,
@@ -61,6 +62,7 @@ class Commons {
                     }
                     return Center(
                       child: TextField(
+                        key: Key('counter'),
                         controller: _controller,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(4),
@@ -68,7 +70,7 @@ class Commons {
                         ],
                         textAlign: TextAlign.center,
                         decoration: InputDecoration.collapsed(hintText: ''),
-                        cursorColor: Constants.primaryColor,
+                        cursorColor: ColorsPackage.primaryColor,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           changeFunction(value, index);
@@ -80,6 +82,7 @@ class Commons {
                   }),
             ),
             IconButton(
+                key: Key('increment'),
                 icon: new Icon(Icons.add_circle_outline),
                 onPressed: () {
                   inc(index);
@@ -99,8 +102,10 @@ class Commons {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Container(
+
                 margin: EdgeInsets.only(right: 15.0),
                 child: Text('$amount  BDT',
+                    key: Key(title),
                     style: TextStyle(fontSize: 20.0, color: Colors.black87))),
           ],
         )
@@ -120,7 +125,7 @@ class Commons {
           child: Container(
             height: 80.0,
             width: double.infinity,
-            color: Constants.primaryColor,
+            color: ColorsPackage.primaryColor,
             child: Container(
               margin: EdgeInsets.only(right: 20.0, top: 25.0),
               child: Row(
@@ -142,6 +147,7 @@ class Commons {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('$amount BDT',
+                              key: Key('total amount'),
                               style: TextStyle(
                                   fontSize: 21.0,
                                   color: Colors.black87,

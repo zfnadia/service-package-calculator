@@ -31,6 +31,10 @@ dev_dependencies:
     sdk: flutter
   intl: any
   flutter_launcher_icons: ^0.7.3
+  flutter_driver:
+    sdk: flutter
+  test: any
+  flutter_gherkin: ^1.0.9
 
 flutter_icons:
   ios: true
