@@ -19,149 +19,143 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
           'Bulk Subscription: \nCustomized',
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          // call this method here to hide soft keyboard
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-                child: ListView(
-              padding: EdgeInsets.only(left: 30.0, right: 10.0),
-              children: <Widget>[
-                SizedBox(
-                  height: 30.0,
-                ),
-                Column(
-                  children: <Widget>[
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(
+              child: ListView(
+            padding: EdgeInsets.only(left: 30.0, right: 10.0),
+            children: <Widget>[
+              SizedBox(
+                height: 30.0,
+              ),
+              Column(
+                children: <Widget>[
 /*                  Commons.switchBDTtoDollar(),
-                    SizedBox(
-                      height: 20.0,
-                    ),*/
-                    Commons.editJobAmount(
-                        'Basic Jobs',
-                        customizedJobBloc.getBasicJobNum,
-                        customizedJobBloc.sinkBasicJobNumber,
-                        customizedJobBloc.incrementBasicJobNum,
-                        customizedJobBloc.decrementBasicJobNum,
-                        '0'),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    //Amount row
-                    StreamBuilder(
-                        stream: customizedJobBloc.getBasicJobFee,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount(
-                              'Amount',
-                              snapshot.hasData && snapshot.data != null
-                                  ? '${snapshot.data}'
-                                  : '0.0');
-                        }),
-                    StreamBuilder(
-                        stream: customizedJobBloc.showDiscountForBasic,
-                        builder: (context, snapshot) {
-                          return Commons.showDiscount('${snapshot.data}%');
-                        }),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Commons.editJobAmount(
-                        'Standout Jobs',
-                        customizedJobBloc.getStandoutJobNum,
-                        customizedJobBloc.sinkStandoutJobNumber,
-                        customizedJobBloc.incrementStandoutJobNum,
-                        customizedJobBloc.decrementStandoutJobNum,
-                        '0'),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    //Amount row
-                    StreamBuilder(
-                        stream: customizedJobBloc.getStandoutJobFee,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount(
-                              'Amount',
-                              snapshot.hasData && snapshot.data != null
-                                  ? '${snapshot.data}'
-                                  : '0.0');
-                        }),
-                    StreamBuilder(
-                        stream: customizedJobBloc.showDiscountForStandout,
-                        builder: (context, snapshot) {
-                          return Commons.showDiscount('${snapshot.data}%');
-                        }),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    StreamBuilder(
-                        stream: customizedJobBloc.getCVNum,
-                        builder: (context, cvNumSnapshot) {
-                          return StreamBuilder(
-                              stream: customizedJobBloc.getCVFee,
-                              builder: (context, cvFeeSnapshot) {
-                                return StreamBuilder(
-                                    stream: customizedJobBloc.getCvStatus,
-                                    builder: (context, cvStatusSnapshot) {
-                                      print('CV STATUS ${cvStatusSnapshot.data}');
-                                      return Commons.cvCount(
-                                          '${cvNumSnapshot.data}',
-                                          '${cvFeeSnapshot.data}',
-                                          cvStatusSnapshot.data,
-                                          customizedJobBloc.sinkCVStatus,
-                                          1);
-                                    });
-                              });
-                        }),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    StreamBuilder(
-                        stream: customizedJobBloc.getValidity,
-                        builder: (context, snapshot) {
-                          return Commons.validitySelection(
-                              snapshot,
-                              customizedJobBloc.getSelectedMonth,
-                              customizedJobBloc.sinkSelectedMonth);
-                        }),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    StreamBuilder(
-                        stream: customizedJobBloc.getSubTotal,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount('Sub Total', snapshot.data);
-                        }),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    StreamBuilder(
-                        stream: customizedJobBloc.getVatOnSubTotal,
-                        builder: (context, snapshot) {
-                          return Commons.showAmount('VAT (5%)', snapshot.data);
-                        }),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                  ],
-                )
-              ],
-            )),
-            StreamBuilder(
-                stream: customizedJobBloc.getSubTotalPlusVat,
-                builder: (context, snapshot) {
-                  return Commons.totalAmountBottom(snapshot.data);
-                }),
-          ],
-        ),
+                  SizedBox(
+                    height: 20.0,
+                  ),*/
+                  Commons.editJobAmount(
+                      'Basic Jobs',
+                      customizedJobBloc.getBasicJobNum,
+                      customizedJobBloc.sinkBasicJobNumber,
+                      customizedJobBloc.incrementBasicJobNum,
+                      customizedJobBloc.decrementBasicJobNum,
+                      '0'),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  //Amount row
+                  StreamBuilder(
+                      stream: customizedJobBloc.getBasicJobFee,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount(
+                            'Amount',
+                            snapshot.hasData && snapshot.data != null
+                                ? '${snapshot.data}'
+                                : '0.0');
+                      }),
+                  StreamBuilder(
+                      stream: customizedJobBloc.showDiscountForBasic,
+                      builder: (context, snapshot) {
+                        return Commons.showDiscount('${snapshot.data}%');
+                      }),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Commons.editJobAmount(
+                      'Standout Jobs',
+                      customizedJobBloc.getStandoutJobNum,
+                      customizedJobBloc.sinkStandoutJobNumber,
+                      customizedJobBloc.incrementStandoutJobNum,
+                      customizedJobBloc.decrementStandoutJobNum,
+                      '0'),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  //Amount row
+                  StreamBuilder(
+                      stream: customizedJobBloc.getStandoutJobFee,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount(
+                            'Amount',
+                            snapshot.hasData && snapshot.data != null
+                                ? '${snapshot.data}'
+                                : '0.0');
+                      }),
+                  StreamBuilder(
+                      stream: customizedJobBloc.showDiscountForStandout,
+                      builder: (context, snapshot) {
+                        return Commons.showDiscount('${snapshot.data}%');
+                      }),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getCVNum,
+                      builder: (context, cvNumSnapshot) {
+                        return StreamBuilder(
+                            stream: customizedJobBloc.getCVFee,
+                            builder: (context, cvFeeSnapshot) {
+                              return StreamBuilder(
+                                  stream: customizedJobBloc.getCvStatus,
+                                  builder: (context, cvStatusSnapshot) {
+                                    print('CV STATUS ${cvStatusSnapshot.data}');
+                                    return Commons.cvCount(
+                                        '${cvNumSnapshot.data}',
+                                        '${cvFeeSnapshot.data}',
+                                        cvStatusSnapshot.data,
+                                        customizedJobBloc.sinkCVStatus,
+                                        1);
+                                  });
+                            });
+                      }),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getValidity,
+                      builder: (context, snapshot) {
+                        return Commons.validitySelection(
+                            snapshot,
+                            customizedJobBloc.getSelectedMonth,
+                            customizedJobBloc.sinkSelectedMonth);
+                      }),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getSubTotal,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount('Sub Total', snapshot.data);
+                      }),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  StreamBuilder(
+                      stream: customizedJobBloc.getVatOnSubTotal,
+                      builder: (context, snapshot) {
+                        return Commons.showAmount('VAT (5%)', snapshot.data);
+                      }),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                ],
+              )
+            ],
+          )),
+          StreamBuilder(
+              stream: customizedJobBloc.getSubTotalPlusVat,
+              builder: (context, snapshot) {
+                return Commons.totalAmountBottom(snapshot.data);
+              }),
+        ],
       ),
     );
   }

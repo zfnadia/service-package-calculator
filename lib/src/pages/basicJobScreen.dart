@@ -19,80 +19,73 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
           'Basic Job',
         ),
       ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          // call this method here to hide soft keyboard
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.only(left: 30.0, right: 10.0),
-                  children: <Widget>[
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Column(
-                      children: <Widget>[
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(left: 30.0, right: 10.0),
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Column(
+                    children: <Widget>[
 /*                      // Switch button
-                        Commons.switchBDTtoDollar(),
-                        SizedBox(
-                          height: 20.0,
-                        ),*/
-                        //Selected Job Number
-                        Commons.editJobAmount(
-                            'Jobs',
-                            basicJobBloc.basicJobNum,
-                            basicJobBloc.sinkBasicJobNumber,
-                            basicJobBloc.incrementJobNum,
-                            basicJobBloc.decrementJobNum,
-                            '0'),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        //Amount row
-                        StreamBuilder(
-                            stream: basicJobBloc.basicJobFee,
-                            builder: (context, snapshot) {
-                              return Commons.showAmount(
-                                  'Amount',
-                                  snapshot.hasData && snapshot.data != null
-                                      ? '${snapshot.data}'
-                                      : '0.0');
-                            }),
-                        SizedBox(
-                          height: 40.0,
-                        ),
-                        StreamBuilder(
-                            stream: basicJobBloc.jobVat,
-                            builder: (context, snapshot) {
-                              return Commons.showAmount(
-                                  'VAT (5%)',
-                                  snapshot.hasData && snapshot.data != null
-                                      ? '${snapshot.data}'
-                                      : '0.0');
-                            }),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      Commons.switchBDTtoDollar(),
+                      SizedBox(
+                        height: 20.0,
+                      ),*/
+                      //Selected Job Number
+                      Commons.editJobAmount(
+                          'Jobs',
+                          basicJobBloc.basicJobNum,
+                          basicJobBloc.sinkBasicJobNumber,
+                          basicJobBloc.incrementJobNum,
+                          basicJobBloc.decrementJobNum,
+                          '0'),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      //Amount row
+                      StreamBuilder(
+                          stream: basicJobBloc.basicJobFee,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'Amount',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                      StreamBuilder(
+                          stream: basicJobBloc.jobVat,
+                          builder: (context, snapshot) {
+                            return Commons.showAmount(
+                                'VAT (5%)',
+                                snapshot.hasData && snapshot.data != null
+                                    ? '${snapshot.data}'
+                                    : '0.0');
+                          }),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              StreamBuilder(
-                  stream: basicJobBloc.totalAmount,
-                  builder: (context, snapshot) {
-                    return Commons.totalAmountBottom(
-                        snapshot.hasData && snapshot.data != null
-                            ? '${snapshot.data}'
-                            : '0.0');
-                  }),
-            ]),
-      ),
+            ),
+            StreamBuilder(
+                stream: basicJobBloc.totalAmount,
+                builder: (context, snapshot) {
+                  return Commons.totalAmountBottom(
+                      snapshot.hasData && snapshot.data != null
+                          ? '${snapshot.data}'
+                          : '0.0');
+                }),
+          ]),
     );
   }
 
