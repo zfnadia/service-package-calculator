@@ -48,6 +48,7 @@ class SelectedJobAndCVBankBloc extends BlocBase {
   void sinkSelectedJobNumber(String jobNum, int index) async {
     _selectedJobNum.sink.add(jobNum);
     int selectedJobNum = int.tryParse(_selectedJobNum.value);
+    print("SELECTED JOB NUM $selectedJobNum");
     if (selectedJobNum == null) {
       sinkValidity(Constants.empty);
       sinkSelectedMonth('0', index);
@@ -58,8 +59,9 @@ class SelectedJobAndCVBankBloc extends BlocBase {
       sinkValidity(Constants.sixMonth);
       sinkSelectedMonth('6', index);
     } else if (selectedJobNum == 20) {
-      sinkValidity(Constants.sixNineMonths);
       sinkSelectedMonth('9', index);
+      sinkValidity(Constants.sixNineMonths);
+
     } else if (selectedJobNum > 20 && selectedJobNum < 30) {
       sinkValidity(Constants.nineMonth);
       sinkSelectedMonth('9', index);
@@ -73,6 +75,7 @@ class SelectedJobAndCVBankBloc extends BlocBase {
   }
 
   void sinkSelectedMonth(String month, int index) {
+    print("SELECTED MONTH $month");
     _selectedMonth.sink.add(month);
     int selectedJobNum = int.tryParse(_selectedJobNum.value);
     getMonthAndJobNumCalculation(_selectedMonth.value, selectedJobNum, index);
@@ -137,8 +140,6 @@ class SelectedJobAndCVBankBloc extends BlocBase {
     var servicePackage = CommonMethods.getServicePackageRate(month,
         selectedJobNum, servicePackageModel.jobListing.bulk[index].rates);
 
-    print('GOT VALUE Final = ${servicePackage.rate}');
-
     int vat = servicePackageModel.vat;
     int basicRate = servicePackage.rate;
     int discount = servicePackage.discount;
@@ -146,7 +147,6 @@ class SelectedJobAndCVBankBloc extends BlocBase {
     int cvFee = servicePackage.cvFee;
     int calculatedBasicFee = (selectedJobNum * basicRate);
     int subTotal = calculatedBasicFee + (_cvStatus.value == false ? 0 : cvFee);
-    print('KKKKKKKKKK $subTotal');
     double subTotalVat = subTotal * (vat / 100);
     double subTotalPlusVat = subTotal + subTotalVat;
     sinkSelectedJobFee(Constants.oCcy.format(calculatedBasicFee).toString());
@@ -185,8 +185,8 @@ class SelectedJobAndCVBankBloc extends BlocBase {
   void clearAllData() {
     _selectedJobNum.value = null;
     _selectedJobFee.value = null;
-    _subTotal.value = null;
-    _subTotalPlusVat.value = null;
+    _subTotal.value = '0.0';
+    _subTotalPlusVat.value = '0.0';
     _vat.value = null;
     _showDiscountForBasic.value = null;
     _cvNum.value = null;

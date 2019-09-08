@@ -223,7 +223,7 @@ class Commons {
 
 //snapshot, getSelectedMonth, sinkSelectedMonth
   static Widget validitySelection(snapshot, Stream stream, Function changeFunc,
-      {int index}) {
+      {int indexOfJsonData}) {
     if (snapshot.hasData && snapshot.data != null) {
       List<int> validMonthList = snapshot.data.toList();
       return Row(
@@ -276,10 +276,10 @@ class Commons {
                                 onPressed: () {
                                   if (snapshot.data is String &&
                                       snapshot.data == validMonthList[index]) {
-                                    changeFunc('', index);
+                                    changeFunc('', indexOfJsonData);
                                   } else {
                                     changeFunc(validMonthList[index].toString(),
-                                        index);
+                                        indexOfJsonData);
                                   }
                                 },
                               ),

@@ -94,7 +94,7 @@ class _BasicAndCVBankSubState extends State<BasicAndCVBankSub> {
                           return Commons.validitySelection(
                               snapshot,
                               selectedAndCVBankBloc.getSelectedMonth,
-                              selectedAndCVBankBloc.sinkSelectedMonth, index: 0);
+                              selectedAndCVBankBloc.sinkSelectedMonth, indexOfJsonData: 0);
                         }),
                     SizedBox(
                       height: 30.0,
