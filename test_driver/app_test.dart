@@ -13,6 +13,8 @@ void main() {
     final vatFinder = find.byValueKey('VAT (5%)');
     final amountToPayFinder = find.byValueKey('total amount');
 
+    final int maxJobNumber = 200;
+
     FlutterDriver driver;
 
     // Connect to the Flutter driver before running any tests.
@@ -49,44 +51,22 @@ void main() {
         return amount + (amount * 0.05);
       }
 
-      for (int i = 1; i <= 10; i++) {
+
+      for (int i = 1; i <= maxJobNumber; i++) {
+        print("Inctrement $i");
         await driver.tap(incButtonFinder);
         expect(await driver.getText(amountFinder),
             '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
-        for (int j = 1; j < i; j--) {
-          await driver.tap(decButtonFinder);
-          expect(await driver.getText(amountFinder),
-              '${Constants.oCcy.format(getAmount(basicRate, j-1))} BDT');
+        if(i==maxJobNumber){
+          for (int j = i-1; j >= 0; j--) {
+            await driver.tap(decButtonFinder);
+            print("Decctrement $j");
+            expect(await driver.getText(amountFinder),
+                '${Constants.oCcy.format(getAmount(basicRate, j))} BDT');
+          }
         }
       }
-
     });
-
-
-    /*test('decrements the counter', () async {
-      int basicRate = 2950;
-      int getAmount(int basicRate, int jobNum) {
-        return basicRate * jobNum;
-      }
-
-      double getVat(int amount) {
-        return amount * 0.05;
-      }
-
-      double getAmountToPay(int amount) {
-        return amount + (amount * 0.05);
-      }
-
-      for (int i = 10; i <= 1; i--) {
-        await driver.tap(decButtonFinder);
-
-        expect(await driver.getText(amountFinder),
-            '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
-      }
-    });*/
-
-
-
 
   }, timeout: Timeout(Duration(hours: 3)));
 }
