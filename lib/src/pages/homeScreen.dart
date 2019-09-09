@@ -66,13 +66,8 @@ class HomeScreen extends StatelessWidget {
           height: 48.0,
         ),
         Container(
-          height: 150.0,
-          width: 150.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/calculator_logo.png'),
-//                fit: BoxFit.fill,
-            ),
+          child: Image.network(
+            'https://bdjobs.com/images/logo.png',
           ),
         ),
         SizedBox(

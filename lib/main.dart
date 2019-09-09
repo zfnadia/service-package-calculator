@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:service_package_calculator/src/bloc/selectedJobAndCVBankBloc.dart';
 import 'package:service_package_calculator/src/bloc/basicJobBloc.dart';
@@ -8,7 +9,13 @@ import 'package:service_package_calculator/src/bloc/standoutJobBloc.dart';
 import 'package:service_package_calculator/src/pages/homeScreen.dart';
 import 'package:service_package_calculator/src/utilities/colors.dart';
 
-void main() => runApp(MyApp());
+
+void main() {
+  // See https://github.com/flutter/flutter/wiki/Desktop-shells#target-platform-override
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
