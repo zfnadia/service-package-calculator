@@ -51,13 +51,42 @@ void main() {
 
       for (int i = 1; i <= 10; i++) {
         await driver.tap(incButtonFinder);
-        String counterText = await driver.getText(counterTextFinder);
         expect(await driver.getText(amountFinder),
-            '${Constants.oCcy.format(getAmount(basicRate, int.tryParse(counterText)))} BDT');
-/*        expect(await driver.getText(vatFinder), '${Constants.oCcy.format(getVat(getAmount(basicRate, i)))} BDT');
-        expect(await driver.getText(amountToPayFinder), '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, i)))} BDT');
-      }*/
+            '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
+        for (int j = 1; j < i; j--) {
+          await driver.tap(decButtonFinder);
+          expect(await driver.getText(amountFinder),
+              '${Constants.oCcy.format(getAmount(basicRate, j-1))} BDT');
+        }
       }
+
     });
+
+
+    /*test('decrements the counter', () async {
+      int basicRate = 2950;
+      int getAmount(int basicRate, int jobNum) {
+        return basicRate * jobNum;
+      }
+
+      double getVat(int amount) {
+        return amount * 0.05;
+      }
+
+      double getAmountToPay(int amount) {
+        return amount + (amount * 0.05);
+      }
+
+      for (int i = 10; i <= 1; i--) {
+        await driver.tap(decButtonFinder);
+
+        expect(await driver.getText(amountFinder),
+            '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
+      }
+    });*/
+
+
+
+
   }, timeout: Timeout(Duration(hours: 3)));
 }
