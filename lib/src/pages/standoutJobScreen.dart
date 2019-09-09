@@ -44,6 +44,8 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                           standoutJobBloc.sinkBasicJobNumber,
                           standoutJobBloc.incrementBasicJobNum,
                           standoutJobBloc.decrementBasicJobNum,
+                          'standoutInc',
+                          'standoutDec',
                           '0'),
                       SizedBox(
                         height: 20.0,
@@ -56,7 +58,7 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                                 'Amount',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'standoutAmount');
                           }),
                       SizedBox(
                         height: 30.0,
@@ -68,6 +70,8 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                           standoutJobBloc.sinkPremiumJobNumber,
                           standoutJobBloc.incrementPremiumJobNum,
                           standoutJobBloc.decrementPremiumJobNum,
+                          'standoutPremInc',
+                          'standoutPremDec',
                           '0'),
                       SizedBox(
                         height: 20.0,
@@ -80,7 +84,7 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                                 'Amount',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'standoutPremiumAmount');
                           }),
                       SizedBox(
                         height: 30.0,
@@ -98,7 +102,7 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                                 'Sub Total',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'standoutSubTotal');
                           }),
                       SizedBox(
                         height: 30.0,
@@ -110,7 +114,7 @@ class _StandoutSubscriptionState extends State<StandoutSubscription> {
                                 'VAT (5%)',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'standoutVat');
                           }),
                       SizedBox(
                         height: 30.0,

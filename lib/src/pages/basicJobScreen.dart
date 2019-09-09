@@ -43,6 +43,8 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                           basicJobBloc.sinkBasicJobNumber,
                           basicJobBloc.incrementJobNum,
                           basicJobBloc.decrementJobNum,
+                          'basicInc',
+                          'basicDec',
                           '0'),
                       SizedBox(
                         height: 30.0,
@@ -55,7 +57,7 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                                 'Amount',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'basicAmount');
                           }),
                       SizedBox(
                         height: 40.0,
@@ -67,7 +69,7 @@ class _BasicJobSubscriptionState extends State<BasicJobSubscription> {
                                 'VAT (5%)',
                                 snapshot.hasData && snapshot.data != null
                                     ? '${snapshot.data}'
-                                    : '0.0');
+                                    : '0.0', 'basicVat');
                           }),
                       SizedBox(
                         height: 30.0,

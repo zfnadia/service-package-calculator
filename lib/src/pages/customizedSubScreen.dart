@@ -41,6 +41,8 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                       customizedJobBloc.sinkBasicJobNumber,
                       customizedJobBloc.incrementBasicJobNum,
                       customizedJobBloc.decrementBasicJobNum,
+                      'customBasicInc',
+                      'customBasicDec',
                       '0'),
                   SizedBox(
                     height: 30.0,
@@ -53,7 +55,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                             'Amount',
                             snapshot.hasData && snapshot.data != null
                                 ? '${snapshot.data}'
-                                : '0.0');
+                                : '0.0', 'customBasicAmnt');
                       }),
                   StreamBuilder(
                       stream: customizedJobBloc.showDiscountForBasic,
@@ -69,6 +71,8 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                       customizedJobBloc.sinkStandoutJobNumber,
                       customizedJobBloc.incrementStandoutJobNum,
                       customizedJobBloc.decrementStandoutJobNum,
+                      'customStandoutInc',
+                      'customStandoutDec',
                       '0'),
                   SizedBox(
                     height: 30.0,
@@ -81,7 +85,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                             'Amount',
                             snapshot.hasData && snapshot.data != null
                                 ? '${snapshot.data}'
-                                : '0.0');
+                                : '0.0', 'customStandoutAmnt');
                       }),
                   StreamBuilder(
                       stream: customizedJobBloc.showDiscountForStandout,
@@ -133,7 +137,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                   StreamBuilder(
                       stream: customizedJobBloc.getSubTotal,
                       builder: (context, snapshot) {
-                        return Commons.showAmount('Sub Total', snapshot.data);
+                        return Commons.showAmount('Sub Total', snapshot.data, 'customSubTotal');
                       }),
                   SizedBox(
                     height: 30.0,
@@ -141,7 +145,7 @@ class _CustomizedSubscriptionState extends State<CustomizedSubscription> {
                   StreamBuilder(
                       stream: customizedJobBloc.getVatOnSubTotal,
                       builder: (context, snapshot) {
-                        return Commons.showAmount('VAT (5%)', snapshot.data);
+                        return Commons.showAmount('VAT (5%)', snapshot.data, 'customVat');
                       }),
                   SizedBox(
                     height: 30.0,

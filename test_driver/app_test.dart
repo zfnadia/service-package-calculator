@@ -6,13 +6,24 @@ import 'package:test/test.dart';
 
 void main() {
   group('Service Package App', () {
-    final incButtonFinder = find.byValueKey('increment');
-    final decButtonFinder = find.byValueKey('decrement');
-    final amountFinder = find.byValueKey('Amount');
-    final vatFinder = find.byValueKey('VAT (5%)');
+    final incButtonFinder = find.byValueKey('basicInc');
+    final decButtonFinder = find.byValueKey('basicDec');
+    final amountFinder = find.byValueKey('basicAmount');
+    final vatFinder = find.byValueKey('basicVat');
     final amountToPayFinder = find.byValueKey('total amount');
+    //standout job screen
+    final standoutIncFinder = find.byValueKey('standoutInc');
+    final standoutDecFinder = find.byValueKey('standoutDec');
+    final standoutAmntFinder = find.byValueKey('standoutAmount');
+    final standoutSubTotalFinder = find.byValueKey('standoutSubTotal');
+    final standoutVatFinder = find.byValueKey('standoutVat');
+    final standoutPremIncFinder = find.byValueKey('standoutPremInc');
+    final standoutPremDecFinder = find.byValueKey('standoutPremInc');
+    final standoutPremiumAmntFinder = find.byValueKey('standoutPremiumAmount');
 
-    final int maxJobNumber = 200;
+
+    final int maxJobNumber = 10;
+    int subTotal = 0;
 
     FlutterDriver driver;
 
@@ -28,7 +39,7 @@ void main() {
       }
     });
 
-    test("Click item in the job list", () async {
+/*    test("Click item in the job list", () async {
       await driver.tap(find.text(Constants.pageNames[1]));
       await driver.waitFor(find.text(Constants.pageNames[1]));
     });
@@ -63,7 +74,57 @@ void main() {
           }
         }
       }
+    });*/
+
+    test("Click item in the job list", () async {
+      await driver.tap(find.text(Constants.pageNames[2]));
+      await driver.waitFor(find.text(Constants.pageNames[2]));
+    });
+
+    test('increments standout job', () async {
+      int basicRate = 3900;
+      int getAmount(int basicRate, int jobNum) {
+        return basicRate * jobNum;
+      }
+
+      double getVat(int amount) {
+        return amount * 0.05;
+      }
+
+      double getAmountToPay(int amount) {
+        return amount + (amount * 0.05);
+      }
+
+      for (int i = 1; i <= 5; i++) {
+        subTotal = subTotal + basicRate;
+        print('SUBTOTAL $subTotal');
+        await driver.tap(standoutIncFinder);
+        expect(await driver.getText(standoutAmntFinder),
+            '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
+        expect(await driver.getText(standoutSubTotalFinder),
+            '${Constants.oCcy.format(subTotal)} BDT');
+        expect(await driver.getText(standoutVatFinder),
+            '${Constants.oCcy.format(getVat(subTotal))} BDT');
+        expect(await driver.getText(amountToPayFinder),
+            '${Constants.oCcy.format(getAmountToPay(subTotal))} BDT');
+
+        if (i == 5) {
+          int basicRate = 4900;
+          for (int i = 1; i <= 5; i++) {
+            subTotal = subTotal + basicRate;
+            print('SUBTOTAL $subTotal');
+            await driver.tap(standoutPremIncFinder);
+            expect(await driver.getText(standoutPremiumAmntFinder),
+                '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
+            expect(await driver.getText(standoutSubTotalFinder),
+                '${Constants.oCcy.format(subTotal)} BDT');
+            expect(await driver.getText(standoutVatFinder),
+                '${Constants.oCcy.format(getVat(subTotal))} BDT');
+            expect(await driver.getText(amountToPayFinder),
+                '${Constants.oCcy.format(getAmountToPay(subTotal))} BDT');
+          }
+        }
+      }
     });
   }, timeout: Timeout(Duration(hours: 3)));
 }
-
