@@ -62,8 +62,8 @@ class Commons {
                     }
                     return Center(
                       child: TextField(
-                        key: Key('counter'),
                         controller: _controller,
+                        key: Key('counter'),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(4),
                           WhitelistingTextInputFormatter.digitsOnly,
@@ -104,7 +104,7 @@ class Commons {
             Container(
 
                 margin: EdgeInsets.only(right: 15.0),
-                child: Text('$amount  BDT',
+                child: Text('$amount BDT',
                     key: Key(title),
                     style: TextStyle(fontSize: 20.0, color: Colors.black87))),
           ],
@@ -136,7 +136,7 @@ class Commons {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text('Amount to pay:    ',
+                          Text('Amount to pay: ',
                               style: TextStyle(
                                   fontSize: 20.0,
                                   color: Colors.black87,
@@ -220,7 +220,7 @@ class Commons {
             ],
           ),
           Spacer(),
-          Text('$cvPrice  BDT',
+          Text('$cvPrice BDT',
               style: TextStyle(fontSize: 20.0, color: Colors.black87))
         ],
       ),
