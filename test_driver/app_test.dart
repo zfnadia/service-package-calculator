@@ -6,7 +6,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Service Package App', () {
-    final counterTextFinder = find.byValueKey('counter');
     final incButtonFinder = find.byValueKey('increment');
     final decButtonFinder = find.byValueKey('decrement');
     final amountFinder = find.byValueKey('Amount');
@@ -19,10 +18,7 @@ void main() {
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
-      driver = await FlutterDriver.connect(
-//        isolateReadyTimeout: timeout,
-//        printCommunication: true,
-          );
+      driver = await FlutterDriver.connect();
     });
 
     // Close the connection to the driver after the tests have completed.
@@ -32,12 +28,12 @@ void main() {
       }
     });
 
-    test("Click list item in the job list", () async {
+    test("Click item in the job list", () async {
       await driver.tap(find.text(Constants.pageNames[1]));
       await driver.waitFor(find.text(Constants.pageNames[1]));
     });
 
-    test('increments the counter', () async {
+    test('increments & decrements the counter', () async {
       int basicRate = 2950;
       int getAmount(int basicRate, int jobNum) {
         return basicRate * jobNum;
@@ -51,22 +47,23 @@ void main() {
         return amount + (amount * 0.05);
       }
 
-
       for (int i = 1; i <= maxJobNumber; i++) {
-        print("Inctrement $i");
         await driver.tap(incButtonFinder);
         expect(await driver.getText(amountFinder),
             '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
-        if(i==maxJobNumber){
+        expect(await driver.getText(vatFinder), '${Constants.oCcy.format(getVat(getAmount(basicRate, i)))} BDT');
+        expect(await driver.getText(amountToPayFinder), '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, i)))} BDT');
+        if(i == maxJobNumber){
           for (int j = i-1; j >= 0; j--) {
             await driver.tap(decButtonFinder);
-            print("Decctrement $j");
             expect(await driver.getText(amountFinder),
                 '${Constants.oCcy.format(getAmount(basicRate, j))} BDT');
+            expect(await driver.getText(vatFinder), '${Constants.oCcy.format(getVat(getAmount(basicRate, j)))} BDT');
+            expect(await driver.getText(amountToPayFinder), '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, j)))} BDT');
           }
         }
       }
     });
-
   }, timeout: Timeout(Duration(hours: 3)));
 }
+
