@@ -46,6 +46,8 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                         selectedAndCVBankBloc.sinkSelectedJobNumber,
                         selectedAndCVBankBloc.incrementSelectedJobNum,
                         selectedAndCVBankBloc.decrementSelectedJobNum,
+                        'bulkstandoutInc',
+                        'bulkStandoutDec',
                         '0',
                         index: 1),
                     SizedBox(
@@ -59,7 +61,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                               'Amount',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'bulkStandoutAmount');
                         }),
                     StreamBuilder(
                         stream: selectedAndCVBankBloc.showDiscountForBasic,
@@ -117,7 +119,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                               'Sub Total',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'bulkStandoutSubTotal');
                         }),
                     SizedBox(
                       height: 30.0,
@@ -129,7 +131,7 @@ class _StandoutAndCVBankSubState extends State<StandoutAndCVBankSub> {
                               'VAT (5%)',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'bulkStandoutVat');
                         }),
                     SizedBox(
                       height: 30.0,

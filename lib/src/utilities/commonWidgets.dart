@@ -27,7 +27,7 @@ class Commons {
   }
 
   static Widget editJobAmount(String title, Stream stream,
-      Function changeFunction, Function inc, Function dec, String init,
+      Function changeFunction, Function inc, Function dec, String incKey, String decKey, String init,
       {int index}) {
     final _controller = TextEditingController();
     return Row(
@@ -38,7 +38,7 @@ class Commons {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
-                key: Key('decrement'),
+                key: Key(decKey),
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
                   dec(index);
@@ -82,7 +82,7 @@ class Commons {
                   }),
             ),
             IconButton(
-                key: Key('increment'),
+                key: Key(incKey),
                 icon: new Icon(Icons.add_circle_outline),
                 onPressed: () {
                   inc(index);
@@ -93,7 +93,7 @@ class Commons {
     );
   }
 
-  static Widget showAmount(String title, String amount) {
+  static Widget showAmount(String title, String amount, String key) {
     return Row(
       children: <Widget>[
         Text('$title', style: TextStyle(fontSize: 20.0, color: Colors.black87)),
@@ -102,10 +102,9 @@ class Commons {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Container(
-
                 margin: EdgeInsets.only(right: 15.0),
                 child: Text('$amount BDT',
-                    key: Key(title),
+                    key: Key(key),
                     style: TextStyle(fontSize: 20.0, color: Colors.black87))),
           ],
         )

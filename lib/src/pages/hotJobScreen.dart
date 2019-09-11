@@ -44,6 +44,8 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         hotJobBloc.sinkBasicJobNumber,
                         hotJobBloc.incrementBasicJobNum,
                         hotJobBloc.decrementBasicJobNum,
+                        'hotJobInc',
+                        'hotJobDec',
                         '0'),
                     SizedBox(
                       height: 20.0,
@@ -56,7 +58,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                               'Amount',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'hotJobAmount');
                         }),
                     StreamBuilder(
                         stream: hotJobBloc.showDiscountForBasic,
@@ -75,6 +77,8 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                         hotJobBloc.sinkPremiumJobNumber,
                         hotJobBloc.incrementPremiumJobNum,
                         hotJobBloc.decrementPremiumJobNum,
+                        'hotJobPremInc',
+                        'hotJobPremDec',
                         '0'),
                     SizedBox(
                       height: 20.0,
@@ -87,7 +91,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                               'Amount',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'hotJobPremiumAmount');
                         }),
                     StreamBuilder(
                         stream: hotJobBloc.showDiscountForPremium,
@@ -112,7 +116,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                               'Sub Total',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'hotJobSubTotal');
                         }),
                     SizedBox(
                       height: 30.0,
@@ -124,7 +128,7 @@ class _HotJobSubscriptionState extends State<HotJobSubscription> {
                               'VAT (5%)',
                               snapshot.hasData && snapshot.data != null
                                   ? '${snapshot.data}'
-                                  : '0.0');
+                                  : '0.0', 'hotJobVat');
                         }),
                     SizedBox(
                       height: 30.0,
