@@ -183,7 +183,7 @@ class Commons {
       children: <Widget>[
         Container(
             margin: EdgeInsets.only(top: 5.0, right: 15.0),
-            child: Text('$discountAmount discount appplied',
+            child: Text('$discountAmount discount applied',
                 style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.red,
