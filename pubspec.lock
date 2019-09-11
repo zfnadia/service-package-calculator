@@ -84,7 +84,7 @@ packages:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.8+1"
+    version: "5.0.10"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -181,7 +181,7 @@ packages:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.15.8"
+    version: "0.16.0"
   io:
     dependency: transitive
     description:
@@ -300,7 +300,7 @@ packages:
       name: process
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.11"
+    version: "3.0.12"
   pub_semver:
     dependency: transitive
     description:
