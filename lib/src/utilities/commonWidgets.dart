@@ -63,7 +63,6 @@ class Commons {
                     return Center(
                       child: TextField(
                         controller: _controller,
-                        key: Key(_controller.text),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(4),
                           WhitelistingTextInputFormatter.digitsOnly,

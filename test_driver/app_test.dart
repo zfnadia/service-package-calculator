@@ -5,7 +5,7 @@ import 'package:service_package_calculator/src/utilities/constants.dart';
 import 'package:test/test.dart';
 
 void main() {
-  int getAmount(int basicRate, int jobNum) {
+  double getAmount(double basicRate, int jobNum) {
     return basicRate * jobNum;
   }
 
@@ -82,12 +82,19 @@ void main() {
     final hotJobPremIncFinder = find.byValueKey('hotJobPremInc');
     final hotJobPremDecFinder = find.byValueKey('hotJobPremDec');
     final hotJobPremiumAmntFinder = find.byValueKey('hotJobPremiumAmount');
+    //bulk basic screen
+    final bulkBasicIncFinder = find.byValueKey('bulkBasicInc');
+    final bulkBasicDecFinder = find.byValueKey('bulkBasicDec');
+    final bulkBasicAmntFinder = find.byValueKey('bulkBasicAmount');
+    final bulkBasicSubTotalFinder = find.byValueKey('bulkBasicSubTotal');
+    final bulkBasicVatFinder = find.byValueKey('bulkBasicVat');
 
     final int maxJobNumber = 10;
-    int standoutSubTotal = 0;
+    double standoutSubTotal = 0;
     int hotJobBasicRate = 11000;
     int hotJobPremiumRate = 13500;
     double hotJobSubTotal = 0;
+    double bulkBasicSubTotal = 0;
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
@@ -102,40 +109,39 @@ void main() {
     });
 //.......................Basic Job Test.........................................
 
-/*    test("Click item in the job list", () async {
+    test("Click item in the job list", () async {
       await driver.tap(find.text(Constants.pageNames[1]));
       await driver.waitFor(find.text(Constants.pageNames[1]));
     });
 
     test('increments & decrements the counter', () async {
-      int basicRate = 2950;
+      double basicRate = 2950;
       for (int i = 1; i <= maxJobNumber; i++) {
         await driver.tap(incButtonFinder);
         expect(await driver.getText(amountFinder),
             '${Constants.oCcy.format(getAmount(basicRate, i))} BDT');
-        expect(await driver.getText(vatFinder), '${Constants.oCcy.format(getVat(getAmount(basicRate, i)))} BDT');
-        expect(await driver.getText(amountToPayFinder), '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, i)))} BDT');
-        if(i == maxJobNumber){
-          for (int j = i-1; j >= 0; j--) {
+        expect(await driver.getText(vatFinder),
+            '${Constants.oCcy.format(getVat(getAmount(basicRate, i)))} BDT');
+        expect(await driver.getText(amountToPayFinder),
+            '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, i)))} BDT');
+        if (i == maxJobNumber) {
+          for (int j = i - 1; j >= 0; j--) {
             await driver.tap(decButtonFinder);
             expect(await driver.getText(amountFinder),
                 '${Constants.oCcy.format(getAmount(basicRate, j))} BDT');
-            expect(await driver.getText(vatFinder), '${Constants.oCcy.format(getVat(getAmount(basicRate, j)))} BDT');
-            expect(await driver.getText(amountToPayFinder), '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, j)))} BDT');
+            expect(await driver.getText(vatFinder),
+                '${Constants.oCcy.format(getVat(getAmount(basicRate, j)))} BDT');
+            expect(await driver.getText(amountToPayFinder),
+                '${Constants.oCcy.format(getAmountToPay(getAmount(basicRate, j)))} BDT');
           }
         }
       }
-    });*/
-
+      await driver.tap(find.byTooltip('Back'));
 //............................Standout Job Test.................................
-/*    test("Click item in the job list", () async {
       await driver.tap(find.text(Constants.pageNames[2]));
       await driver.waitFor(find.text(Constants.pageNames[2]));
-    });
 
-    test('increment & decrement both standout basic and premium jobs',
-        () async {
-      int standoutBasicRate = 3900;
+      double standoutBasicRate = 3900;
 
       for (int standoutIncCounter = 1;
           standoutIncCounter <= maxJobNumber;
@@ -152,7 +158,7 @@ void main() {
             '${Constants.oCcy.format(getAmountToPay(standoutSubTotal))} BDT');
 
         if (standoutIncCounter == maxJobNumber) {
-          int standoutPremiumRate = 4900;
+          double standoutPremiumRate = 4900;
           for (int standoutPremIncCounter = 1;
               standoutPremIncCounter <= maxJobNumber;
               standoutPremIncCounter++) {
@@ -199,15 +205,10 @@ void main() {
           }
         }
       }
-    });*/
-
-//.............................Hot Job Tests............................
-    test("Click item in the job list", () async {
+      await driver.tap(find.byTooltip('Back'));
+      //.............................Hot Job Tests............................
       await driver.tap(find.text(Constants.pageNames[3]));
       await driver.waitFor(find.text(Constants.pageNames[3]));
-    });
-
-    test('increment & decrement both hot job basic and premium jobs', () async {
       for (int hotJobIncCounter = 1;
           hotJobIncCounter <= maxJobNumber;
           hotJobIncCounter++) {
@@ -291,6 +292,7 @@ void main() {
           }
         }
       }
+      await driver.tap(find.byTooltip('Back'));
     });
   }, timeout: Timeout(Duration(hours: 3)));
 }

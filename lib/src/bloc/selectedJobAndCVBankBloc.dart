@@ -111,7 +111,7 @@ class SelectedJobAndCVBankBloc extends BlocBase {
         _selectedJobNum.value == null || _selectedJobNum.value.isEmpty
             ? '0'
             : _selectedJobNum.value);
-    if (jobNum >= 0 && jobNum < 9999) {
+    if (jobNum >= 0 ) {
       jobNum++;
       sinkSelectedJobNumber(jobNum.toString(), index);
     }
