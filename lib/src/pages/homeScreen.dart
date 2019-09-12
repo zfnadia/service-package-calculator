@@ -11,7 +11,6 @@ import 'package:service_package_calculator/src/utilities/constants.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-
   List<Widget> pageList = [
     BasicJobSubscription(),
     StandoutSubscription(),
@@ -31,28 +30,29 @@ class HomeScreen extends StatelessWidget {
             return index == 0
                 ? headerItem()
                 : Container(
-                  key: Key(Constants.pageNames[index]),
-                  padding: EdgeInsets.only(
-                      left: 16.0,
-                      right: 16.0,
-                      top: 3,
-                      bottom: index == Constants.pageNames.length - 1 ? 64.0 : 3.0),
-                  child: Card(
-                    color: ColorsPackage.primaryColor,
-                    elevation: 3.0,
-                    child: ListTile(
-                      title: Text(
-                        '${Constants.pageNames[index]}',
-                        style: TextStyle(
-                            fontSize: 16.0, color: Colors.black87),
+                    key: Key(Constants.pageNames[index]),
+                    padding: EdgeInsets.only(
+                        left: 16.0,
+                        right: 16.0,
+                        top: 3,
+                        bottom: index == Constants.pageNames.length - 1
+                            ? 64.0
+                            : 3.0),
+                    child: Card(
+                      color: ColorsPackage.primaryColor,
+                      elevation: 3.0,
+                      child: ListTile(
+                        title: Text(
+                          '${Constants.pageNames[index]}',
+                          style:
+                              TextStyle(fontSize: 16.0, color: Colors.black87),
+                        ),
+                        onTap: () {
+                          routes.goToSelectedPage(context, pageList[index - 1]);
+                        },
                       ),
-                      onTap: () {
-                        routes.goToSelectedPage(
-                            context, pageList[index - 1]);
-                      },
                     ),
-                  ),
-                );
+                  );
           },
         ),
       ),
@@ -66,8 +66,13 @@ class HomeScreen extends StatelessWidget {
           height: 48.0,
         ),
         Container(
-          child: Image.network(
-            'https://bdjobs.com/images/logo.png',
+          height: 50.0,
+          width: 200.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bdj_logo.png'),
+//                fit: BoxFit.fill,
+            ),
           ),
         ),
         SizedBox(
