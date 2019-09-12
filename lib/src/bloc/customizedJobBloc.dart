@@ -120,7 +120,7 @@ class CustomizedJobBloc extends BlocBase {
     int jobNum = 0;
     jobNum =
         int.tryParse(_basicJobNum.value == null || _basicJobNum.value.isEmpty ? '0' : _basicJobNum.value);
-    if (jobNum >= 0) {
+    if (jobNum >= 0 && jobNum < 9999) {
       jobNum++;
       sinkBasicJobNumber(jobNum.toString(), index);
     }
@@ -140,7 +140,7 @@ class CustomizedJobBloc extends BlocBase {
     int jobNum = 0;
     jobNum = int.tryParse(
         _standoutJobNum.value == null || _standoutJobNum.value.isEmpty ? '0' : _standoutJobNum.value);
-    if (jobNum >= 0) {
+    if (jobNum >= 0 && jobNum < 9999) {
       jobNum++;
       sinkStandoutJobNumber(jobNum.toString(), index);
     }

@@ -5,8 +5,6 @@ import 'package:service_package_calculator/src/utilities/constants.dart';
 import 'package:test/test.dart';
 
 void main() {
-
-
   int getAmount(int basicRate, int jobNum) {
     return basicRate * jobNum;
   }
@@ -20,7 +18,14 @@ void main() {
   }
 
   double getJobDiscount(int jobNum, String jobType) {
-    List<double> discountForBasic = [0, 25, 40.9090909, 43.1818182, 44.5454546, 50.9090909];
+    List<double> discountForBasic = [
+      0,
+      25,
+      40.9090909,
+      43.1818182,
+      44.5454546,
+      50.9090909
+    ];
     List<double> discountForPremium = [0, 25, 40, 43, 45, 51];
     print(discountForBasic[0]);
 
@@ -49,7 +54,6 @@ void main() {
     } else {
       return jobNum * basicRate * ((100 - discount) * 0.01);
     }
-
   }
 
   group('Service Package App', () {
@@ -203,17 +207,39 @@ void main() {
       await driver.waitFor(find.text(Constants.pageNames[3]));
     });
 
-    test('increment & decrement both hot job basic and premium jobs',
-            () async {
-          for (int hotJobIncCounter = 1;
+    test('increment & decrement both hot job basic and premium jobs', () async {
+      for (int hotJobIncCounter = 1;
           hotJobIncCounter <= maxJobNumber;
           hotJobIncCounter++) {
-            double hotJobDiscountedBasic = getDiscountedAmount(getJobDiscount(hotJobIncCounter, 'Basic_Hot_Job'), hotJobIncCounter, hotJobBasicRate);
-            print('HOT JOB DISCOUNTED BASIC $hotJobDiscountedBasic JOB DISCOUNT ${getJobDiscount(hotJobIncCounter, 'Basic_Hot_Job')}');
-            hotJobSubTotal = hotJobDiscountedBasic;
-            await driver.tap(hotJobIncFinder);
-            expect(await driver.getText(hotJobAmntFinder),
-                '${Constants.oCcy.format(hotJobDiscountedBasic)} BDT');
+        double hotJobDiscountedBasic = getDiscountedAmount(
+            getJobDiscount(hotJobIncCounter, 'Basic_Hot_Job'),
+            hotJobIncCounter,
+            hotJobBasicRate);
+        print(
+            'HOT JOB DISCOUNTED BASIC $hotJobDiscountedBasic JOB DISCOUNT ${getJobDiscount(hotJobIncCounter, 'Basic_Hot_Job')}');
+        hotJobSubTotal = hotJobDiscountedBasic;
+        await driver.tap(hotJobIncFinder);
+        expect(await driver.getText(hotJobAmntFinder),
+            '${Constants.oCcy.format(hotJobDiscountedBasic)} BDT');
+        expect(await driver.getText(hotJobSubTotalFinder),
+            '${Constants.oCcy.format(hotJobSubTotal)} BDT');
+        expect(await driver.getText(hotJobVatFinder),
+            '${Constants.oCcy.format(getVat(hotJobSubTotal))} BDT');
+        expect(await driver.getText(amountToPayFinder),
+            '${Constants.oCcy.format(getAmountToPay(hotJobSubTotal))} BDT');
+
+        if (hotJobIncCounter == maxJobNumber) {
+          for (int hotJobPremIncCounter = 1;
+              hotJobPremIncCounter <= maxJobNumber;
+              hotJobPremIncCounter++) {
+            double hotJobDiscountedPremium = getDiscountedAmount(
+                getJobDiscount(hotJobPremIncCounter, 'Premium_Hot_Job'),
+                hotJobPremIncCounter,
+                hotJobPremiumRate);
+            hotJobSubTotal = hotJobSubTotal + hotJobDiscountedPremium;
+            await driver.tap(hotJobPremIncFinder);
+            expect(await driver.getText(hotJobPremiumAmntFinder),
+                '${Constants.oCcy.format(hotJobDiscountedPremium)} BDT');
             expect(await driver.getText(hotJobSubTotalFinder),
                 '${Constants.oCcy.format(hotJobSubTotal)} BDT');
             expect(await driver.getText(hotJobVatFinder),
@@ -221,17 +247,20 @@ void main() {
             expect(await driver.getText(amountToPayFinder),
                 '${Constants.oCcy.format(getAmountToPay(hotJobSubTotal))} BDT');
 
-            if (hotJobIncCounter == maxJobNumber) {
-              for (int hotJobPremIncCounter = 1;
-              hotJobPremIncCounter <= maxJobNumber;
-              hotJobPremIncCounter++) {
-                double hotJobDiscountedPremium = getDiscountedAmount(getJobDiscount(hotJobPremIncCounter, 'Premium_Hot_Job'), hotJobPremIncCounter, hotJobPremiumRate);
+            hotJobSubTotal = hotJobSubTotal - hotJobDiscountedPremium;
+
+            if (hotJobPremIncCounter == maxJobNumber) {
+              for (int hotJobPremDecCounter = hotJobPremIncCounter - 1;
+                  hotJobPremDecCounter >= 0;
+                  hotJobPremDecCounter--) {
+                double hotJobDiscountedPremium = getDiscountedAmount(
+                    getJobDiscount(hotJobPremDecCounter, 'Premium_Hot_Job'),
+                    hotJobPremDecCounter,
+                    hotJobPremiumRate);
                 hotJobSubTotal = hotJobSubTotal + hotJobDiscountedPremium;
-                await driver.tap(hotJobPremIncFinder);
+                await driver.tap(hotJobPremDecFinder);
                 expect(await driver.getText(hotJobPremiumAmntFinder),
                     '${Constants.oCcy.format(hotJobDiscountedPremium)} BDT');
-                expect(await driver.getText(hotJobSubTotalFinder),
-                    '${Constants.oCcy.format(hotJobSubTotal)} BDT');
                 expect(await driver.getText(hotJobVatFinder),
                     '${Constants.oCcy.format(getVat(hotJobSubTotal))} BDT');
                 expect(await driver.getText(amountToPayFinder),
@@ -239,42 +268,29 @@ void main() {
 
                 hotJobSubTotal = hotJobSubTotal - hotJobDiscountedPremium;
 
-                if (hotJobPremIncCounter == maxJobNumber) {
-                  for (int hotJobPremDecCounter = hotJobPremIncCounter - 1;
-                  hotJobPremDecCounter >= 0;
-                  hotJobPremDecCounter--) {
-                    double hotJobDiscountedPremium = getDiscountedAmount(getJobDiscount(hotJobPremDecCounter, 'Premium_Hot_Job'), hotJobPremDecCounter, hotJobPremiumRate);
-                    hotJobSubTotal = hotJobSubTotal + hotJobDiscountedPremium;
-                    await driver.tap(hotJobPremDecFinder);
-                    expect(await driver.getText(hotJobPremiumAmntFinder),
-                        '${Constants.oCcy.format(hotJobDiscountedPremium)} BDT');
+                if (hotJobPremDecCounter == 0) {
+                  for (int hotJobDecCounter = hotJobIncCounter - 1;
+                      hotJobDecCounter >= 0;
+                      hotJobDecCounter--) {
+                    double hotJobDiscountedBasic = getDiscountedAmount(
+                        getJobDiscount(hotJobDecCounter, 'Basic_Hot_Job'),
+                        hotJobDecCounter,
+                        hotJobBasicRate);
+                    hotJobSubTotal = hotJobDiscountedBasic;
+                    await driver.tap(hotJobDecFinder);
+                    expect(await driver.getText(hotJobAmntFinder),
+                        '${Constants.oCcy.format(hotJobDiscountedBasic)} BDT');
                     expect(await driver.getText(hotJobVatFinder),
                         '${Constants.oCcy.format(getVat(hotJobSubTotal))} BDT');
                     expect(await driver.getText(amountToPayFinder),
                         '${Constants.oCcy.format(getAmountToPay(hotJobSubTotal))} BDT');
-
-                    hotJobSubTotal = hotJobSubTotal - hotJobDiscountedPremium;
-
-                    if (hotJobPremDecCounter == 0) {
-                      for (int hotJobDecCounter = hotJobIncCounter - 1;
-                      hotJobDecCounter >= 0;
-                      hotJobDecCounter--) {
-                        double hotJobDiscountedBasic = getDiscountedAmount(getJobDiscount(hotJobDecCounter, 'Basic_Hot_Job'), hotJobDecCounter, hotJobBasicRate);
-                        hotJobSubTotal = hotJobDiscountedBasic;
-                        await driver.tap(hotJobDecFinder);
-                        expect(await driver.getText(hotJobAmntFinder),
-                            '${Constants.oCcy.format(hotJobDiscountedBasic)} BDT');
-                        expect(await driver.getText(hotJobVatFinder),
-                            '${Constants.oCcy.format(getVat(hotJobSubTotal))} BDT');
-                        expect(await driver.getText(amountToPayFinder),
-                            '${Constants.oCcy.format(getAmountToPay(hotJobSubTotal))} BDT');
-                      }
-                    }
                   }
                 }
               }
             }
           }
-        });
+        }
+      }
+    });
   }, timeout: Timeout(Duration(hours: 3)));
 }

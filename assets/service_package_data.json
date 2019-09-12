@@ -94,7 +94,7 @@
           },
           {
             "min": 201,
-            "max": 2000,
+            "max": 9999,
             "duration": 12,
             "discount": 65,
             "rate": 1033,
@@ -180,7 +180,7 @@
           },
           {
             "min": 201,
-            "max": 2000,
+            "max": 9999,
             "duration": 12,
             "discount": 65,
             "rate": 1365,

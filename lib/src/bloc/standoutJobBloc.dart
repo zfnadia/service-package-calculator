@@ -69,7 +69,7 @@ class StandoutJobBloc extends BlocBase {
         _basicJobNum.value == null || _basicJobNum.value.isEmpty
             ? '0'
             : _basicJobNum.value);
-    if (jobNum >= 0) {
+    if (jobNum >= 0 && jobNum < 9999) {
       jobNum++;
       sinkBasicJobNumber(jobNum.toString(), index);
     }
@@ -81,7 +81,7 @@ class StandoutJobBloc extends BlocBase {
         _premiumJobNum.value == null || _premiumJobNum.value.isEmpty
             ? '0'
             : _premiumJobNum.value);
-    if (jobNum >= 0) {
+    if (jobNum >= 0 && jobNum < 9999) {
       jobNum++;
       sinkPremiumJobNumber(jobNum.toString(), index);
     }
